@@ -185,7 +185,7 @@ function StockDetail() {
               </p>
             </div>
             <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Market Cap</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Market Cap (Millions)</p>
               <p className="text-gray-900 dark:text-white">
                 ${(initialProfile.marketCapitalization || 0).toFixed(0)}
               </p>

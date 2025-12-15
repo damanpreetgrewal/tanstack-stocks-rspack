@@ -14,11 +14,9 @@
     "build": "nx run-many --projects=api,web --targets=build",
     "lint": "nx run-many --projects=api,web,contracts --targets=lint",
     "test": "nx run-many --projects=api,web,contracts --targets=test",
-    "type-check": "tsc --noEmit && nx run-many --projects=api,web,contracts --targets=type-check",
-    "prisma": "prisma",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "type-check": "tsc --noEmit && nx run-many --projects=api,web,targets=type-check",
+    "clean:install": "powershell -Command \"$ErrorActionPreference='SilentlyContinue'; Remove-Item -Path .\\node_modules, .\\apps\\*\\node_modules, .\\packages\\*\\node_modules, .\\package-lock.json -Recurse -Force; npm install\"",
+    "db:studio": "cd apps/api && prisma studio"
   },
   "devDependencies": {
     "@nx/node": "^22.0.0",

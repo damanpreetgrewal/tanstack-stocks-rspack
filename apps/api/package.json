@@ -4,7 +4,7 @@
   "private": true,
   "main": "dist/main.js",
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "prisma generate && tsx watch src/main.ts",
     "build": "tsc",
     "start": "node dist/main.js",
     "type-check": "tsc --noEmit",
