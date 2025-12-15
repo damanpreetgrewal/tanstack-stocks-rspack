@@ -1,0 +1,22 @@
+{
+  "projectType": "library",
+  "sourceRoot": "packages/contracts/src",
+  "prefix": "stocks",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/contracts/**/*.ts"]
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit",
+        "cwd": "packages/contracts"
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "nx/presets/npm.json",
+  "plugins": ["@nx/node", "@nx/react", "@nx/web"],
+  "targetDefaults": {
+    "build": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
+    }
+  }
+}

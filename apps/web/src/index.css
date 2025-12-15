@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: 59 130 246;
+  --color-secondary: 139 92 246;
+}
+
+* {
+  @apply box-border;
+}
+
+html,
+body {
+  @apply h-full w-full;
+}
+
+#root {
+  @apply h-full w-full;
+}
+
+body {
+  @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-50;
+}

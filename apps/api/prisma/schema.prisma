@@ -1,0 +1,60 @@
+datasource db {
+  provider = "mongodb"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  email     String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  watchlist Watchlist[]
+  alerts    PriceAlert[]
+
+  @@map("users")
+}
+
+model Watchlist {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @db.ObjectId
+  ticker    String
+  createdAt DateTime  @default(now())
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, ticker])
+  @@index([userId])
+  @@map("watchlists")
+}
+
+model PriceAlert {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @db.ObjectId
+  ticker    String
+  price     Float
+  condition String    // "above" | "below"
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([active])
+  @@map("price_alerts")
+}
+
+model StockCache {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  ticker    String    @unique
+  data      Json
+  updatedAt DateTime  @updatedAt
+  expiresAt DateTime
+  
+  @@index([expiresAt])
+  @@map("stock_cache")
+}

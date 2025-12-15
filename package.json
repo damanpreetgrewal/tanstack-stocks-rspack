@@ -1,0 +1,46 @@
+{
+  "name": "tanstack-stocks-rspack",
+  "version": "1.0.0",
+  "description": "Advanced stocks dashboard with TanStack + Rspack + Express + MongoDB",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "nx run-many --projects=api,web --targets=dev --parallel",
+    "api": "nx run api:dev",
+    "web": "nx run web:dev",
+    "build": "nx run-many --projects=api,web --targets=build",
+    "lint": "nx run-many --projects=api,web,contracts --targets=lint",
+    "test": "nx run-many --projects=api,web,contracts --targets=test",
+    "type-check": "tsc --noEmit && nx run-many --projects=api,web,contracts --targets=type-check",
+    "prisma": "prisma",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "devDependencies": {
+    "@nx/node": "^22.0.0",
+    "@nx/react": "^22.0.0",
+    "@nx/web": "^22.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "nx": "^22.0.0",
+    "prettier": "^3.1.0",
+    "prisma": "^5.7.0",
+    "typescript": "^5.5.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "dotenv": "^16.3.1"
+  },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}
