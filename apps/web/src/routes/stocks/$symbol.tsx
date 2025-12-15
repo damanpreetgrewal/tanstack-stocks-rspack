@@ -7,27 +7,29 @@ import { apiClient } from '../../lib/api-client'
 import { z } from 'zod'
 
 type Quote = {
-  c: number;
-  pc: number;
-  h: number;
-  l: number;
-  t: number;
-};
+  c: number
+  pc: number
+  h: number
+  l: number
+  t: number
+}
 
 type Profile = {
-  name: string;
-  finnhubIndustry?: string;
-  marketCapitalization?: number;
-  country?: string;
-  weburl?: string;
-};
+  name: string
+  finnhubIndustry?: string
+  marketCapitalization?: number
+  country?: string
+  weburl?: string
+}
 
 type HistoricalData = {
-  c: number[];
-};
+  c: number[]
+}
 
-const searchSchema = z.object({ tab: z.enum(['overview', 'chart', 'news']).optional().default('overview') })
-type SearchParams = z.infer<typeof searchSchema>;
+const searchSchema = z.object({
+  tab: z.enum(['overview', 'chart', 'news']).optional().default('overview'),
+})
+type SearchParams = z.infer<typeof searchSchema>
 
 export const Route = createFileRoute('/stocks/$symbol')({
   validateSearch: searchSchema,
@@ -58,20 +60,25 @@ function StockDetail() {
   // Real-time quote updates (polls every 10s)
   const { data: liveQuote = initialQuote } = useQuery({
     queryKey: ['stock', 'quote', symbol],
-    queryFn: () =>
-      apiClient.getQuote({ params: { symbol } }).then((res) => res.body as Quote),
+    queryFn: () => apiClient.getQuote({ params: { symbol } }).then((res) => res.body as Quote),
     refetchInterval: 10000,
     initialData: initialQuote,
   })
 
   // Historical data for chart (lazy loaded)
-  const { data: historicalData, isLoading: historyLoading, error: historyError } = useQuery({
+  const {
+    data: historicalData,
+    isLoading: historyLoading,
+    error: historyError,
+  } = useQuery({
     queryKey: ['stock', 'historical', symbol],
     queryFn: () =>
-      apiClient.getHistorical({
-        params: { symbol },
-        query: { resolution: 'D', count: '30' },
-      }).then((res) => res.body as HistoricalData),
+      apiClient
+        .getHistorical({
+          params: { symbol },
+          query: { resolution: 'D', count: '30' },
+        })
+        .then((res) => res.body as HistoricalData),
     enabled: search.tab === 'chart',
     retry: false,
   })
@@ -228,7 +235,8 @@ function StockDetail() {
                 📊 Historical Chart Data Unavailable
               </p>
               <p className="text-yellow-700 dark:text-yellow-300 text-sm">
-                Historical candle data requires a paid Finnhub plan. The free tier only supports real-time quotes and company profiles.
+                Historical candle data requires a paid Finnhub plan. The free tier only supports
+                real-time quotes and company profiles.
               </p>
             </div>
           ) : historicalData?.c ? (
@@ -254,12 +262,18 @@ function StockDetail() {
                 <div>
                   <p className="text-gray-600 dark:text-gray-400">Avg Close</p>
                   <p className="font-bold text-gray-900 dark:text-white">
-                    ${(historicalData.c.reduce((a: number, b: number) => a + b) / historicalData.c.length).toFixed(2)}
+                    $
+                    {(
+                      historicalData.c.reduce((a: number, b: number) => a + b) /
+                      historicalData.c.length
+                    ).toFixed(2)}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 dark:text-gray-400">Data Points</p>
-                  <p className="font-bold text-gray-900 dark:text-white">{historicalData.c.length}</p>
+                  <p className="font-bold text-gray-900 dark:text-white">
+                    {historicalData.c.length}
+                  </p>
                 </div>
               </div>
             </div>
@@ -272,9 +286,7 @@ function StockDetail() {
       {search.tab === 'news' && (
         <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-800">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">News & Updates</h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            📰 News integration can be added here
-          </p>
+          <p className="text-gray-600 dark:text-gray-400">📰 News integration can be added here</p>
         </div>
       )}
     </div>

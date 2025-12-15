@@ -34,6 +34,6 @@ export const CompanyProfileSchema = z.object({
   weburl: z.string().optional(),
 })
 
-export type Stock = z.infer<typeof StockSchema>;
-export type StockQuote = z.infer<typeof StockQuoteSchema>;
-export type CompanyProfile = z.infer<typeof CompanyProfileSchema>;
+export type Stock = z.infer<typeof StockSchema>
+export type StockQuote = z.infer<typeof StockQuoteSchema>
+export type CompanyProfile = z.infer<typeof CompanyProfileSchema>

@@ -1,5 +1,5 @@
-import { useEffect } from "react"
-import { useNavigate } from "@tanstack/react-router"
+import { useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 
 export function Component() {
   const navigate = useNavigate()
@@ -8,7 +8,7 @@ export function Component() {
     // better-auth handles the OAuth callback automatically
     // Just redirect to home or dashboard after a brief delay
     const timer = setTimeout(() => {
-      navigate({ to: "/" })
+      navigate({ to: '/' })
     }, 500)
 
     return () => clearTimeout(timer)

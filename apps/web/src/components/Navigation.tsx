@@ -34,7 +34,7 @@ export function Navigation() {
           >
             Search
           </Link>
-          
+
           {session?.user ? (
             <>
               <Link
@@ -43,17 +43,19 @@ export function Navigation() {
               >
                 ⭐ Watchlist
               </Link>
-              
+
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
                   {session.user.image ? (
-                    <img 
-                      src={session.user.image} 
-                      alt={session.user.name || 'User'} 
+                    <img
+                      src={session.user.image}
+                      alt={session.user.name || 'User'}
                       className="w-8 h-8 rounded-full object-cover"
                     />
                   ) : (
-                    <div className={`w-8 h-8 rounded-full ${getAvatarColor(session.user.name)} flex items-center justify-center text-white text-xs font-semibold`}>
+                    <div
+                      className={`w-8 h-8 rounded-full ${getAvatarColor(session.user.name)} flex items-center justify-center text-white text-xs font-semibold`}
+                    >
                       {getInitials(session.user.name)}
                     </div>
                   )}
@@ -61,7 +63,7 @@ export function Navigation() {
                     {session.user.name || session.user.email}
                   </span>
                 </div>
-                
+
                 <button
                   onClick={handleSignOut}
                   className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"

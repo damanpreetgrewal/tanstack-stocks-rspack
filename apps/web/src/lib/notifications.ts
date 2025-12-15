@@ -1,8 +1,14 @@
 import { toast } from 'sonner'
 
 export interface NotificationOptions {
-  duration?: number;
-  position?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+  duration?: number
+  position?:
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right'
 }
 
 /**
@@ -45,16 +51,16 @@ export const notify = {
     toast.dismiss(id)
   },
 
-  promise: <T,>(
+  promise: <T>(
     promise: Promise<T>,
     {
       loading,
       success,
       error,
     }: {
-      loading: string;
-      success: (data: T) => string;
-      error: (err: Error) => string;
+      loading: string
+      success: (data: T) => string
+      error: (err: Error) => string
     }
   ) => {
     return toast.promise(promise, {

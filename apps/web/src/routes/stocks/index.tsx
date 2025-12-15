@@ -14,18 +14,18 @@ const stocksSearchParamsSchema = z.object({
 })
 
 type Stock = {
-  symbol: string;
-  description: string;
-};
+  symbol: string
+  description: string
+}
 
 type LoaderData = {
   results: {
-    results: Stock[];
-    total: number;
-  };
-};
+    results: Stock[]
+    total: number
+  }
+}
 
-type SearchParams = z.infer<typeof stocksSearchParamsSchema>;
+type SearchParams = z.infer<typeof stocksSearchParamsSchema>
 
 export const Route = createFileRoute('/stocks/')({
   validateSearch: stocksSearchParamsSchema,
@@ -103,9 +103,7 @@ function StocksList() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-          🔍 Search Stocks
-        </h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">🔍 Search Stocks</h1>
         <p className="text-gray-600 dark:text-gray-400">
           Found {loaderData.results.total || 0} stocks
         </p>
@@ -220,12 +218,8 @@ function StocksList() {
                       navigate({ to: '/stocks/$symbol', params: { symbol: stock.symbol } })
                     }
                   >
-                    <p className="font-semibold text-gray-900 dark:text-white">
-                      {stock.symbol}
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {stock.description}
-                    </p>
+                    <p className="font-semibold text-gray-900 dark:text-white">{stock.symbol}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{stock.description}</p>
                   </div>
                 </div>
               )

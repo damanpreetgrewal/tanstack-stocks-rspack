@@ -5,21 +5,17 @@ import { notify } from '../lib/notifications'
 import { useState } from 'react'
 
 interface StockCardProps {
-  symbol: string;
-  quote: StockQuote;
-  onViewDetails?: () => void;
+  symbol: string
+  quote: StockQuote
+  onViewDetails?: () => void
 }
 
 export function StockCard({ symbol, quote, onViewDetails }: StockCardProps) {
-  const [isInWatchlist, setIsInWatchlist] = useState(
-    watchlistHelpers.has(symbol)
-  )
+  const [isInWatchlist, setIsInWatchlist] = useState(watchlistHelpers.has(symbol))
 
   const change = ((quote.c - quote.pc) / quote.pc) * 100
   const changeClass =
-    change >= 0
-      ? 'text-green-600 dark:text-green-400'
-      : 'text-red-600 dark:text-red-400'
+    change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
 
   const handleWatchlistToggle = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -35,17 +31,18 @@ export function StockCard({ symbol, quote, onViewDetails }: StockCardProps) {
 
   return (
     // @ts-expect-error - Dynamic route path
-    <Link to={`/stocks/${symbol}`} onClick={(e) => {
-      if (onViewDetails) {
-        e.preventDefault()
-        onViewDetails()
-      }
-    }}>
+    <Link
+      to={`/stocks/${symbol}`}
+      onClick={(e) => {
+        if (onViewDetails) {
+          e.preventDefault()
+          onViewDetails()
+        }
+      }}
+    >
       <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800 hover:shadow-lg transition cursor-pointer h-full flex flex-col">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-bold text-lg text-gray-900 dark:text-white">
-            {symbol}
-          </h3>
+          <h3 className="font-bold text-lg text-gray-900 dark:text-white">{symbol}</h3>
           <button
             onClick={handleWatchlistToggle}
             className={`text-lg transition ${
@@ -63,7 +60,8 @@ export function StockCard({ symbol, quote, onViewDetails }: StockCardProps) {
             ${quote.c.toFixed(2)}
           </p>
           <p className={`text-lg font-semibold ${changeClass}`}>
-            {change >= 0 ? '+' : ''}{change.toFixed(2)}%
+            {change >= 0 ? '+' : ''}
+            {change.toFixed(2)}%
           </p>
         </div>
 

@@ -22,11 +22,9 @@ function Watchlist() {
 
   useEffect(() => {
     // Subscribe to watchlist changes
-    const unsubscribe = watchlistStore.subscribe(
-      () => {
-        setWatchlist(Array.from(watchlistStore.state.items))
-      }
-    )
+    const unsubscribe = watchlistStore.subscribe(() => {
+      setWatchlist(Array.from(watchlistStore.state.items))
+    })
 
     return unsubscribe
   }, [])
@@ -66,9 +64,7 @@ function Watchlist() {
 
       {watchlist.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Your watchlist is empty
-          </p>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">Your watchlist is empty</p>
           <a
             href="/stocks"
             className="inline-block mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
@@ -106,16 +102,11 @@ function WatchlistCard({ symbol }: { symbol: string }) {
         >
           {symbol}
         </a>
-        <button
-          onClick={handleRemove}
-          className="text-red-500 hover:text-red-700 transition"
-        >
+        <button onClick={handleRemove} className="text-red-500 hover:text-red-700 transition">
           ✕
         </button>
       </div>
-      <p className="text-2xl font-bold text-gray-900 dark:text-white">
-        ${quote.c.toFixed(2)}
-      </p>
+      <p className="text-2xl font-bold text-gray-900 dark:text-white">${quote.c.toFixed(2)}</p>
       <p
         className={
           quote.c >= quote.pc
@@ -123,7 +114,7 @@ function WatchlistCard({ symbol }: { symbol: string }) {
             : 'text-red-600 dark:text-red-400'
         }
       >
-        {((quote.c - quote.pc) / quote.pc * 100).toFixed(2)}%
+        {(((quote.c - quote.pc) / quote.pc) * 100).toFixed(2)}%
       </p>
     </div>
   )

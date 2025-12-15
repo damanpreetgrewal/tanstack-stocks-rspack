@@ -3,23 +3,19 @@ import { auth } from './auth'
 
 export interface AuthenticatedRequest extends Request {
   user?: {
-    id: string;
-    email: string;
-    name?: string;
-    image?: string;
-  };
+    id: string
+    email: string
+    name?: string
+    image?: string
+  }
   session?: {
-    id: string;
-    userId: string;
-    expiresAt: Date;
-  };
+    id: string
+    userId: string
+    expiresAt: Date
+  }
 }
 
-export async function requireAuth(
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-) {
+export async function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
     const session = await auth.api.getSession({
       headers: req.headers as Record<string, string>,
@@ -33,15 +29,15 @@ export async function requireAuth(
     }
 
     req.user = session.user as {
-      id: string;
-      email: string;
-      name?: string;
-      image?: string;
+      id: string
+      email: string
+      name?: string
+      image?: string
     }
     req.session = session.session as {
-      id: string;
-      userId: string;
-      expiresAt: Date;
+      id: string
+      userId: string
+      expiresAt: Date
     }
     next()
   } catch (error) {
@@ -52,11 +48,7 @@ export async function requireAuth(
   }
 }
 
-export async function optionalAuth(
-  req: AuthenticatedRequest,
-  _res: Response,
-  next: NextFunction
-) {
+export async function optionalAuth(req: AuthenticatedRequest, _res: Response, next: NextFunction) {
   try {
     const session = await auth.api.getSession({
       headers: req.headers as Record<string, string>,
@@ -64,15 +56,15 @@ export async function optionalAuth(
 
     if (session) {
       req.user = session.user as {
-        id: string;
-        email: string;
-        name?: string;
-        image?: string;
+        id: string
+        email: string
+        name?: string
+        image?: string
       }
       req.session = session.session as {
-        id: string;
-        userId: string;
-        expiresAt: Date;
+        id: string
+        userId: string
+        expiresAt: Date
       }
     }
     next()

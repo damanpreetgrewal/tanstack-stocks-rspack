@@ -1,10 +1,10 @@
 import { Store } from '@tanstack/store'
 
 interface WatchlistState {
-  items: Set<string>;
-  priority: 'high' | 'low';
-  isLoading: boolean;
-  isInitialized: boolean;
+  items: Set<string>
+  priority: 'high' | 'low'
+  isLoading: boolean
+  isInitialized: boolean
 }
 
 // Initialize store

@@ -23,10 +23,12 @@ app.set('trust proxy', 1)
 
 // Middleware
 app.use(helmet())
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
-  credentials: true,
-}))
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
+    credentials: true,
+  })
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -95,7 +97,7 @@ const PORT_NUMBER = typeof PORT === 'string' ? Number.parseInt(PORT, 10) : PORT
 app.listen(PORT_NUMBER, async () => {
   logger.info(`🚀 Server running on http://localhost:${PORT_NUMBER}`)
   logger.info(`📚 Stocks API endpoints available at /api`)
-  
+
   // Test database connection
   try {
     await prisma.watchlist.findFirst()
