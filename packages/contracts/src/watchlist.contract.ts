@@ -38,7 +38,7 @@ export const watchlistContract = c.router({
       }),
       400: z.object({ error: z.string() }),
       401: z.object({ error: z.string() }),
-      409: z.object({ error: z.string() }), // Already exists
+      409: z.object({ error: z.string() }),
       500: z.object({ error: z.string() }),
     },
   },
