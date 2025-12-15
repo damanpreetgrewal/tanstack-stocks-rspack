@@ -277,14 +277,6 @@ notify.error('API error');
 notify.info('Loading...');
 ```
 
-### Performance Monitoring
-
-✅ **Web Vitals** (`lib/performance.ts`)
-```typescript
-WebVitals.init(); // Track LCP, FID, CLS
-WebVitals.trackApiCall(method, path, duration);
-```
-
 ### API Client (ts-rest + Zod)
 
 ✅ **Type-Safe Client** (`lib/api-client.ts`)
@@ -357,10 +349,10 @@ const response = await apiClient.getQuote({
 - [ ] Setup TanStack Store watchlist
 - [ ] Persist to localStorage
 
-### Day 6: Performance
+### Day 6: Advanced Features
 - [ ] Add virtual scrolling
 - [ ] Implement error handling
-- [ ] Monitor performance
+- [ ] Add notifications
 
 ### Day 7: Polish
 - [ ] Notifications (Sonner)

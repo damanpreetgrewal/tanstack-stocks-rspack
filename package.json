@@ -1,7 +1,7 @@
 {
   "name": "tanstack-stocks-rspack",
   "version": "1.0.0",
-  "description": "Advanced stocks dashboard with TanStack + Rspack + Express + MongoDB",
+  "description": "Advanced stocks dashboard with TanStack + Rsbuild + Express + MongoDB",
   "private": true,
   "workspaces": [
     "apps/*",

@@ -8,7 +8,7 @@ A **production-ready, fully-featured** stocks dashboard demonstrating **ALL mode
 - ✅ **TanStack Virtual** - Virtualized lists (5000+ stocks smoothly)
 - ✅ **TanStack Store** - Watchlist reactive state with persistence
 - ✅ **React 19** + **Rspack** (5x faster than Webpack!)
-- ✅ **Notifications** (Sonner) + **Performance Monitoring** (Web Vitals)
+- ✅ **Notifications** (Sonner)
 - ✅ **Express API** with **ts-rest** contracts + **Zod** validation
 - ✅ **MongoDB** + **Prisma** ORM
 - ✅ **TypeScript everywhere** - Zero `any` types
@@ -55,7 +55,6 @@ This project is a **complete reference implementation** showing:
 - [x] File-based routing
 - [x] Type-safe API contracts (ts-rest)
 - [x] Error handling & notifications
-- [x] Performance monitoring
 - [x] Monorepo with Nx
 
 ---
@@ -378,7 +377,7 @@ console.log('Store:', watchlistStore.getState());
 
 ---
 
-## 📈 Performance Metrics
+## 📈 Performance Features
 
 This project achieves:
 - ⚡ **Rspack build** - 5x faster than Webpack

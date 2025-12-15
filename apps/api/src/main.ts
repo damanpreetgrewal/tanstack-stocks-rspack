@@ -1,4 +1,5 @@
 import './env';
+import { prisma } from './prisma';
 
 import express, { Express } from 'express';
 import cors from 'cors';
@@ -69,7 +70,15 @@ app.use(errorHandler);
 // Start server
 const PORT_NUMBER = typeof PORT === 'string' ? Number.parseInt(PORT, 10) : PORT;
 
-app.listen(PORT_NUMBER, () => {
+app.listen(PORT_NUMBER, async () => {
   logger.info(`🚀 Server running on http://localhost:${PORT_NUMBER}`);
   logger.info(`📚 Stocks API endpoints available at /api`);
+  
+  // Test database connection
+  try {
+    await prisma.user.findFirst();
+    logger.info('✅ Database connection verified');
+  } catch (error) {
+    logger.warn('⚠️ Database connection test skipped (first query)');
+  }
 });

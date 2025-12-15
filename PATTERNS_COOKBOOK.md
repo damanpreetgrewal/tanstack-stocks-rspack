@@ -481,7 +481,7 @@ return (
 
 ---
 
-## Performance Patterns
+## Optimization Patterns
 
 ### Pattern 1: Prefetch on Hover
 
