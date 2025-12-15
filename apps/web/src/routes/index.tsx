@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { StockCard } from '../components/StockCard';
-import { apiClient } from '../lib/api-client';
-import { StockQuote } from '@stocks/contracts';
+import { createFileRoute } from '@tanstack/react-router'
+import { StockCard } from '../components/StockCard'
+import { apiClient } from '../lib/api-client'
+import { StockQuote } from '@stocks/contracts'
 
 type PopularStocksResponse = Awaited<ReturnType<typeof apiClient.getPopular>>['body'];
 
@@ -19,12 +19,12 @@ export const Route = createFileRoute('/')({
   loader: async () => {
     const response = await apiClient.getPopular({
       query: { limit: '8' },
-    });
+    })
     return {
       popularStocks: response.body,
-    };
+    }
   },
-});
+})
 
 /**
  * Dashboard Route
@@ -33,15 +33,15 @@ export const Route = createFileRoute('/')({
  */
 function Dashboard() {
   // Access pre-loaded data with full type safety
-  const loaderData = Route.useLoaderData() as { popularStocks: PopularStocksResponse };
-  const navigate = Route.useNavigate();
+  const loaderData = Route.useLoaderData() as { popularStocks: PopularStocksResponse }
+  const navigate = Route.useNavigate()
 
-  const { popularStocks } = loaderData;
+  const { popularStocks } = loaderData
 
   const handleViewStock = (symbol: string) => {
     // Type-safe navigation
-    navigate({ to: '/stocks/$symbol', params: { symbol } });
-  };
+    navigate({ to: '/stocks/$symbol', params: { symbol } })
+  }
 
   return (
     <div className="space-y-6">
@@ -81,5 +81,5 @@ function Dashboard() {
         </button>
       </div>
     </div>
-  );
+  )
 }

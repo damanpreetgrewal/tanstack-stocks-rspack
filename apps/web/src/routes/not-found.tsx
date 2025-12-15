@@ -1,8 +1,8 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/not-found')({
   component: NotFound,
-});
+})
 
 export default function NotFound() {
   return (
@@ -16,5 +16,5 @@ export default function NotFound() {
         Go Home
       </Link>
     </div>
-  );
+  )
 }

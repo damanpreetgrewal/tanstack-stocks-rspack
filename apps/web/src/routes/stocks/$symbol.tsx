@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useQuery } from '@tanstack/react-query';
-import { watchlistHelpers } from '../../lib/store';
-import { notify } from '../../lib/notifications';
-import { useState } from 'react';
-import { apiClient } from '../../lib/api-client';
-import { z } from 'zod';
+import { createFileRoute } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+import { watchlistHelpers } from '../../lib/store'
+import { notify } from '../../lib/notifications'
+import { useState } from 'react'
+import { apiClient } from '../../lib/api-client'
+import { z } from 'zod'
 
 type Quote = {
   c: number;
@@ -26,7 +26,7 @@ type HistoricalData = {
   c: number[];
 };
 
-const searchSchema = z.object({ tab: z.enum(['overview', 'chart', 'news']).optional().default('overview') });
+const searchSchema = z.object({ tab: z.enum(['overview', 'chart', 'news']).optional().default('overview') })
 type SearchParams = z.infer<typeof searchSchema>;
 
 export const Route = createFileRoute('/stocks/$symbol')({
@@ -35,11 +35,11 @@ export const Route = createFileRoute('/stocks/$symbol')({
     const [quote, profile] = await Promise.all([
       apiClient.getQuote({ params: { symbol } }).then((r) => r.body),
       apiClient.getProfile({ params: { symbol } }).then((r) => r.body),
-    ]);
-    return { quote, profile };
+    ])
+    return { quote, profile }
   },
   component: StockDetail,
-});
+})
 
 /**
  * Stock Detail Page
@@ -47,13 +47,13 @@ export const Route = createFileRoute('/stocks/$symbol')({
  * Shows advanced patterns: getRouteApi, tabs, real-time sync
  */
 function StockDetail() {
-  const { symbol } = Route.useParams();
-  const search = Route.useSearch() as SearchParams;
-  const loaderData = Route.useLoaderData() as { quote: Quote; profile: Profile };
-  const navigate = Route.useNavigate();
-  const [isInWatchlist, setIsInWatchlist] = useState(watchlistHelpers.has(symbol));
+  const { symbol } = Route.useParams()
+  const search = Route.useSearch() as SearchParams
+  const loaderData = Route.useLoaderData() as { quote: Quote; profile: Profile }
+  const navigate = Route.useNavigate()
+  const [isInWatchlist, setIsInWatchlist] = useState(watchlistHelpers.has(symbol))
 
-  const { quote: initialQuote, profile: initialProfile } = loaderData;
+  const { quote: initialQuote, profile: initialProfile } = loaderData
 
   // Real-time quote updates (polls every 10s)
   const { data: liveQuote = initialQuote } = useQuery({
@@ -62,7 +62,7 @@ function StockDetail() {
       apiClient.getQuote({ params: { symbol } }).then((res) => res.body as Quote),
     refetchInterval: 10000,
     initialData: initialQuote,
-  });
+  })
 
   // Historical data for chart (lazy loaded)
   const { data: historicalData, isLoading: historyLoading, error: historyError } = useQuery({
@@ -74,30 +74,30 @@ function StockDetail() {
       }).then((res) => res.body as HistoricalData),
     enabled: search.tab === 'chart',
     retry: false,
-  });
+  })
 
   const handleWatchlistToggle = () => {
     if (isInWatchlist) {
-      watchlistHelpers.remove(symbol);
-      notify.success(`${symbol} removed from watchlist`);
+      watchlistHelpers.remove(symbol)
+      notify.success(`${symbol} removed from watchlist`)
     } else {
-      watchlistHelpers.add(symbol);
-      notify.success(`${symbol} added to watchlist`);
+      watchlistHelpers.add(symbol)
+      notify.success(`${symbol} added to watchlist`)
     }
-    setIsInWatchlist(!isInWatchlist);
-  };
+    setIsInWatchlist(!isInWatchlist)
+  }
 
   if (!liveQuote || !initialProfile) {
     return (
       <div className="text-center py-12">
         <div className="inline-block h-8 w-8 border-4 border-gray-200 dark:border-gray-800 border-t-blue-500 rounded-full animate-spin" />
       </div>
-    );
+    )
   }
 
-  const change = ((liveQuote.c - liveQuote.pc) / (liveQuote.pc || 1)) * 100;
+  const change = ((liveQuote.c - liveQuote.pc) / (liveQuote.pc || 1)) * 100
   const changeClass =
-    change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
+    change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
 
   return (
     <div className="space-y-6">
@@ -159,7 +159,7 @@ function StockDetail() {
               onClick={() => {
                 navigate({
                   search: { tab },
-                });
+                })
               }}
               className={`py-3 px-4 border-b-2 font-medium transition ${
                 search.tab === tab
@@ -278,5 +278,5 @@ function StockDetail() {
         </div>
       )}
     </div>
-  );
+  )
 }

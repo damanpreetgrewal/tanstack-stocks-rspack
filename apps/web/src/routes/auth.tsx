@@ -1,30 +1,30 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
-import { signIn, signUp, useSession } from '../lib/auth-client';
-import { toast } from 'sonner';
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useState } from 'react'
+import { signIn, signUp, useSession } from '../lib/auth-client'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/auth')({
   component: AuthPage,
-});
+})
 
 function AuthPage() {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const { data: session } = useSession();
+  const [isLogin, setIsLogin] = useState(true)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+  const { data: session } = useSession()
 
   // Redirect if already logged in
   if (session) {
-    navigate({ to: '/' });
-    return null;
+    navigate({ to: '/' })
+    return null
   }
 
   const handleEmailAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
 
     try {
       if (isLogin) {
@@ -32,38 +32,38 @@ function AuthPage() {
           email,
           password,
           callbackURL: '/',
-        });
-        toast.success('Logged in successfully!');
-        navigate({ to: '/' });
+        })
+        toast.success('Logged in successfully!')
+        navigate({ to: '/' })
       } else {
         await signUp.email({
           email,
           password,
           name,
           callbackURL: '/',
-        });
-        toast.success('Account created successfully!');
-        navigate({ to: '/' });
+        })
+        toast.success('Account created successfully!')
+        navigate({ to: '/' })
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Authentication failed';
-      toast.error(errorMessage);
+      const errorMessage = error instanceof Error ? error.message : 'Authentication failed'
+      toast.error(errorMessage)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleOAuthSignIn = async (provider: 'google' | 'github') => {
     try {
       await signIn.social({
         provider,
         callbackURL: '/',
-      });
+      })
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : `${provider} sign-in failed`;
-      toast.error(errorMessage);
+      const errorMessage = error instanceof Error ? error.message : `${provider} sign-in failed`
+      toast.error(errorMessage)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
@@ -194,5 +194,5 @@ function AuthPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

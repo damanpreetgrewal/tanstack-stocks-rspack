@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { auth } from './auth';
+import { Request, Response, NextFunction } from 'express'
+import { auth } from './auth'
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -23,13 +23,13 @@ export async function requireAuth(
   try {
     const session = await auth.api.getSession({
       headers: req.headers as Record<string, string>,
-    });
+    })
 
     if (!session) {
       return res.status(401).json({
         success: false,
         error: 'Unauthorized - Please login',
-      });
+      })
     }
 
     req.user = session.user as {
@@ -37,18 +37,18 @@ export async function requireAuth(
       email: string;
       name?: string;
       image?: string;
-    };
+    }
     req.session = session.session as {
       id: string;
       userId: string;
       expiresAt: Date;
-    };
-    next();
+    }
+    next()
   } catch (error) {
     return res.status(401).json({
       success: false,
       error: 'Unauthorized - Invalid session',
-    });
+    })
   }
 }
 
@@ -60,7 +60,7 @@ export async function optionalAuth(
   try {
     const session = await auth.api.getSession({
       headers: req.headers as Record<string, string>,
-    });
+    })
 
     if (session) {
       req.user = session.user as {
@@ -68,16 +68,16 @@ export async function optionalAuth(
         email: string;
         name?: string;
         image?: string;
-      };
+      }
       req.session = session.session as {
         id: string;
         userId: string;
         expiresAt: Date;
-      };
+      }
     }
-    next();
+    next()
   } catch (error) {
     // Continue without authentication
-    next();
+    next()
   }
 }

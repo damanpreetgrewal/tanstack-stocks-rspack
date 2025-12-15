@@ -1,53 +1,53 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import { useStockQuote } from '../../lib/queries';
-import { watchlistHelpers, watchlistStore } from '../../lib/store';
-import { notify } from '../../lib/notifications';
-import { useSession } from '../../lib/auth-client';
+import { createFileRoute } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
+import { useStockQuote } from '../../lib/queries'
+import { watchlistHelpers, watchlistStore } from '../../lib/store'
+import { notify } from '../../lib/notifications'
+import { useSession } from '../../lib/auth-client'
 
 export const Route = createFileRoute('/watchlist/')({
   component: Watchlist,
-});
+})
 
 function Watchlist() {
-  const { data: session, isPending } = useSession();
-  const [watchlist, setWatchlist] = useState<string[]>(watchlistHelpers.getAll());
+  const { data: session, isPending } = useSession()
+  const [watchlist, setWatchlist] = useState<string[]>(watchlistHelpers.getAll())
 
   // Redirect to auth if not logged in
   useEffect(() => {
     if (!isPending && !session?.user) {
-      window.location.href = '/auth';
+      window.location.href = '/auth'
     }
-  }, [session, isPending]);
+  }, [session, isPending])
 
   useEffect(() => {
     // Subscribe to watchlist changes
     const unsubscribe = watchlistStore.subscribe(
       () => {
-        setWatchlist(Array.from(watchlistStore.state.items));
+        setWatchlist(Array.from(watchlistStore.state.items))
       }
-    );
+    )
 
-    return unsubscribe;
-  }, []);
+    return unsubscribe
+  }, [])
 
   const handleClear = () => {
     if (confirm('Are you sure you want to clear your watchlist?')) {
-      watchlistHelpers.clear();
-      notify.success('Watchlist cleared');
+      watchlistHelpers.clear()
+      notify.success('Watchlist cleared')
     }
-  };
+  }
 
   if (isPending) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-gray-600 dark:text-gray-400">Loading...</div>
       </div>
-    );
+    )
   }
 
   if (!session?.user) {
-    return null; // Will redirect
+    return null // Will redirect
   }
 
   return (
@@ -84,18 +84,18 @@ function Watchlist() {
         </div>
       )}
     </div>
-  );
+  )
 }
 
 function WatchlistCard({ symbol }: { symbol: string }) {
-  const { data: quote } = useStockQuote(symbol);
+  const { data: quote } = useStockQuote(symbol)
 
   const handleRemove = () => {
-    watchlistHelpers.remove(symbol);
-    notify.success(`${symbol} removed from watchlist`);
-  };
+    watchlistHelpers.remove(symbol)
+    notify.success(`${symbol} removed from watchlist`)
+  }
 
-  if (!quote) return <div className="h-40 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse" />;
+  if (!quote) return <div className="h-40 bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse" />
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800">
@@ -126,5 +126,5 @@ function WatchlistCard({ symbol }: { symbol: string }) {
         {((quote.c - quote.pc) / quote.pc * 100).toFixed(2)}%
       </p>
     </div>
-  );
+  )
 }

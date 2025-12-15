@@ -1,7 +1,7 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { Suspense } from 'react';
-import { Navigation } from '../components/Navigation';
-import NotFound from './not-found';
+import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { Suspense } from 'react'
+import { Navigation } from '../components/Navigation'
+import NotFound from './not-found'
 
 function RootComponent() {
   return (
@@ -23,7 +23,7 @@ function RootComponent() {
         </div>
       </footer>
     </div>
-  );
+  )
 }
 
 function LoadingSpinner() {
@@ -34,10 +34,10 @@ function LoadingSpinner() {
         <p className="text-gray-600 dark:text-gray-400">Loading...</p>
       </div>
     </div>
-  );
+  )
 }
 
 export const Route = createRootRoute({
   component: RootComponent,
   notFoundComponent: NotFound,
-});
+})
