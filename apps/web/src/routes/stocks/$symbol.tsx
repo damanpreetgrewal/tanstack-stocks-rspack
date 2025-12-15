@@ -50,6 +50,7 @@ function StockDetail() {
   const { symbol } = Route.useParams();
   const search = Route.useSearch() as SearchParams;
   const loaderData = Route.useLoaderData() as { quote: Quote; profile: Profile };
+  const navigate = Route.useNavigate();
   const [isInWatchlist, setIsInWatchlist] = useState(watchlistHelpers.has(symbol));
 
   const { quote: initialQuote, profile: initialProfile } = loaderData;
@@ -64,7 +65,7 @@ function StockDetail() {
   });
 
   // Historical data for chart (lazy loaded)
-  const { data: historicalData, isLoading: historyLoading } = useQuery({
+  const { data: historicalData, isLoading: historyLoading, error: historyError } = useQuery({
     queryKey: ['stock', 'historical', symbol],
     queryFn: () =>
       apiClient.getHistorical({
@@ -72,6 +73,7 @@ function StockDetail() {
         query: { resolution: 'D', count: '30' },
       }).then((res) => res.body as HistoricalData),
     enabled: search.tab === 'chart',
+    retry: false,
   });
 
   const handleWatchlistToggle = () => {
@@ -155,7 +157,7 @@ function StockDetail() {
             <button
               key={tab}
               onClick={() => {
-                Route.useNavigate()({
+                navigate({
                   search: { tab },
                 });
               }}
@@ -220,6 +222,15 @@ function StockDetail() {
           </h2>
           {historyLoading ? (
             <p className="text-gray-600 dark:text-gray-400">Loading chart...</p>
+          ) : historyError ? (
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+              <p className="text-yellow-800 dark:text-yellow-200 font-semibold mb-2">
+                📊 Historical Chart Data Unavailable
+              </p>
+              <p className="text-yellow-700 dark:text-yellow-300 text-sm">
+                Historical candle data requires a paid Finnhub plan. The free tier only supports real-time quotes and company profiles.
+              </p>
+            </div>
           ) : historicalData?.c ? (
             <div className="space-y-4">
               <div className="h-64 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
