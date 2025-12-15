@@ -18,11 +18,7 @@ export const asyncHandler = (
   }
 }
 
-export const errorHandler = (
-  err: Error | AppError,
-  _req: Request,
-  res: Response
-) => {
+export const errorHandler = (err: Error | AppError, _req: Request, res: Response) => {
   if (err instanceof AppError) {
     logger.warn(`Client error: ${err.statusCode} - ${err.message}`)
     return res.status(err.statusCode).json({

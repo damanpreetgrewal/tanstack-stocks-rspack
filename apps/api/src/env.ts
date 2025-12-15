@@ -19,7 +19,7 @@ for (const envPath of candidates) {
 
 // Validate required environment variables
 const requiredEnvVars = ['DATABASE_URL']
-const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar])
+const missingEnvVars = requiredEnvVars.filter((envVar) => !process.env[envVar])
 
 if (missingEnvVars.length > 0) {
   throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')}`)

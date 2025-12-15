@@ -52,11 +52,7 @@ export const finnhubClient = {
     }
   },
 
-  async getCandles(
-    symbol: string,
-    resolution: 'D' | 'W' | 'M' = 'D',
-    count: number = 30
-  ) {
+  async getCandles(symbol: string, resolution: 'D' | 'W' | 'M' = 'D', count: number = 30) {
     try {
       const { data } = await client.get('/stock/candle', {
         params: {

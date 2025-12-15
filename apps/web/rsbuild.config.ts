@@ -1,6 +1,6 @@
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
-import { TanStackRouterRspack } from '@tanstack/router-plugin/rspack';
+import { defineConfig } from '@rsbuild/core'
+import { pluginReact } from '@rsbuild/plugin-react'
+import { TanStackRouterRspack } from '@tanstack/router-plugin/rspack'
 
 export default defineConfig({
   source: {
@@ -25,4 +25,4 @@ export default defineConfig({
   html: {
     template: './public/index.html',
   },
-});
+})

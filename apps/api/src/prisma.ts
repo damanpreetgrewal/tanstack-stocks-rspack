@@ -18,15 +18,18 @@ if (process.env.NODE_ENV === 'production') {
   prisma = globalWithPrisma.prisma
 }
 
-prisma.$connect().then(() => {
-  logger.info('✅ Database connected successfully')
-}).catch((error: Error) => {
-  logger.error('❌ Database connection failed:', {
-    message: error.message,
-    stack: error.stack,
-    databaseUrl: process.env.DATABASE_URL ? '***REDACTED***' : 'NOT_SET',
+prisma
+  .$connect()
+  .then(() => {
+    logger.info('✅ Database connected successfully')
   })
-  process.exit(1)
-})
+  .catch((error: Error) => {
+    logger.error('❌ Database connection failed:', {
+      message: error.message,
+      stack: error.stack,
+      databaseUrl: process.env.DATABASE_URL ? '***REDACTED***' : 'NOT_SET',
+    })
+    process.exit(1)
+  })
 
 export { prisma }

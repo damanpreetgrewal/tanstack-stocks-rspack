@@ -72,4 +72,4 @@ export const watchlistContract = c.router({
   },
 })
 
-export type WatchlistContract = typeof watchlistContract;
+export type WatchlistContract = typeof watchlistContract

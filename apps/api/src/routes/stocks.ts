@@ -3,35 +3,26 @@ import { logger } from '../logger'
 import { StockQuote, Stock } from '@stocks/contracts'
 
 interface SymbolParams {
-  symbol: string;
+  symbol: string
 }
 
 interface SearchQuery {
-  q?: string;
-  sortBy?: 'symbol' | 'name';
-  sortOrder?: 'asc' | 'desc';
-  page?: string | number;
+  q?: string
+  sortBy?: 'symbol' | 'name'
+  sortOrder?: 'asc' | 'desc'
+  page?: string | number
 }
 
 interface PopularQuery {
-  limit?: string;
+  limit?: string
 }
 
 interface HistoricalQuery {
-  resolution?: string;
-  count?: string;
+  resolution?: string
+  count?: string
 }
 
-const POPULAR_STOCKS = [
-  'AAPL',
-  'GOOGL',
-  'MSFT',
-  'AMZN',
-  'TSLA',
-  'META',
-  'NVDA',
-  'BA',
-]
+const POPULAR_STOCKS = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'META', 'NVDA', 'BA']
 
 export const stocksRouteHandlers = {
   getQuote: async ({ params }: { params: SymbolParams }) => {
@@ -61,14 +52,16 @@ export const stocksRouteHandlers = {
       logger.warn(`Failed to fetch quote for ${symbol}`)
       return {
         status: 500,
-        body: { error: 'Upstream Finnhub request failed. Check FINNHUB_API_KEY and network access.' },
+        body: {
+          error: 'Upstream Finnhub request failed. Check FINNHUB_API_KEY and network access.',
+        },
       } as const
     }
   },
 
   searchStocks: async ({ query }: { query: SearchQuery }) => {
     const { q } = query
-    
+
     // If query is empty, return empty results instead of error
     if (!q || q.trim().length < 1) {
       return {
@@ -99,7 +92,9 @@ export const stocksRouteHandlers = {
     } catch {
       return {
         status: 500 as const,
-        body: { error: 'Upstream Finnhub request failed. Check FINNHUB_API_KEY and network access.' },
+        body: {
+          error: 'Upstream Finnhub request failed. Check FINNHUB_API_KEY and network access.',
+        },
       } as const
     }
   },
@@ -162,7 +157,9 @@ export const stocksRouteHandlers = {
     } catch {
       return {
         status: 500,
-        body: { error: 'Upstream Finnhub request failed. Check FINNHUB_API_KEY and network access.' },
+        body: {
+          error: 'Upstream Finnhub request failed. Check FINNHUB_API_KEY and network access.',
+        },
       } as const
     }
   },
@@ -185,11 +182,7 @@ export const stocksRouteHandlers = {
     const count = Number.isFinite(parsedCount) ? parsedCount : 30
 
     try {
-      const data = await finnhubClient.getCandles(
-        symbol,
-        resolution as 'D' | 'W' | 'M',
-        count
-      )
+      const data = await finnhubClient.getCandles(symbol, resolution as 'D' | 'W' | 'M', count)
 
       if (!data?.c) {
         return {
@@ -202,7 +195,9 @@ export const stocksRouteHandlers = {
     } catch {
       return {
         status: 500,
-        body: { error: 'Upstream Finnhub request failed. Check FINNHUB_API_KEY and network access.' },
+        body: {
+          error: 'Upstream Finnhub request failed. Check FINNHUB_API_KEY and network access.',
+        },
       } as const
     }
   },

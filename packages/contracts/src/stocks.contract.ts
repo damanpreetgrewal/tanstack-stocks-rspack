@@ -1,10 +1,6 @@
 import { initContract } from '@ts-rest/core'
 import { z } from 'zod'
-import {
-  StockSchema,
-  StockQuoteSchema,
-  CompanyProfileSchema,
-} from './common'
+import { StockSchema, StockQuoteSchema, CompanyProfileSchema } from './common'
 
 const c = initContract()
 
@@ -97,4 +93,4 @@ export const stocksContract = c.router({
   },
 })
 
-export type StocksContract = typeof stocksContract;
+export type StocksContract = typeof stocksContract

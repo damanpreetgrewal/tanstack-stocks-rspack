@@ -3,7 +3,7 @@ import { logger } from '../logger'
 import { AuthenticatedRequest } from '../middleware'
 
 interface AddToWatchlistBody {
-  ticker: string;
+  ticker: string
 }
 
 export const watchlistRouteHandlers = {
@@ -27,7 +27,7 @@ export const watchlistRouteHandlers = {
       return {
         status: 200,
         body: {
-          watchlist: watchlistItems.map(item => ({
+          watchlist: watchlistItems.map((item) => ({
             ticker: item.ticker,
             createdAt: item.createdAt.toISOString(),
           })),
@@ -46,8 +46,8 @@ export const watchlistRouteHandlers = {
     req,
     body,
   }: {
-    body: AddToWatchlistBody;
-    req: AuthenticatedRequest;
+    body: AddToWatchlistBody
+    req: AuthenticatedRequest
   }) => {
     const userId = req.user?.id
     const { ticker } = body
@@ -105,7 +105,13 @@ export const watchlistRouteHandlers = {
     }
   },
 
-  removeFromWatchlist: async ({ params, req }: { params: { ticker: string }; req: AuthenticatedRequest }) => {
+  removeFromWatchlist: async ({
+    params,
+    req,
+  }: {
+    params: { ticker: string }
+    req: AuthenticatedRequest
+  }) => {
     const userId = req.user?.id
     const { ticker } = params
 

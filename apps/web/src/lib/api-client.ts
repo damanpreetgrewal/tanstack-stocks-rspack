@@ -3,13 +3,13 @@ import { stocksContract } from '@stocks/contracts'
 import axios from 'axios'
 
 type ApiRequest = {
-  method: string;
-  path: string;
-  body?: unknown;
-  query?: Record<string, unknown>;
-  params?: Record<string, unknown>;
-  headers?: Record<string, string>;
-};
+  method: string
+  path: string
+  body?: unknown
+  query?: Record<string, unknown>
+  params?: Record<string, unknown>
+  headers?: Record<string, string>
+}
 
 const API_URL = import.meta.env.API_URL || 'http://localhost:3000/api'
 
@@ -44,13 +44,11 @@ export const apiClient = initClient(stocksContract, {
       // Use query for search params; params is for path params in ts-rest args
       params: args.query ?? args.params,
     })
-    return { 
-      status: response.status, 
+    return {
+      status: response.status,
       body: response.data,
       headers: new Headers(
-        Object.entries(response.headers || {}).map(
-          ([k, v]) => [k, String(v)] as [string, string],
-        ),
+        Object.entries(response.headers || {}).map(([k, v]) => [k, String(v)] as [string, string])
       ),
     }
   },

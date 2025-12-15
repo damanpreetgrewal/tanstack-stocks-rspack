@@ -3,15 +3,15 @@ import { StockCard } from '../components/StockCard'
 import { apiClient } from '../lib/api-client'
 import { StockQuote } from '@stocks/contracts'
 
-type PopularStocksResponse = Awaited<ReturnType<typeof apiClient.getPopular>>['body'];
+type PopularStocksResponse = Awaited<ReturnType<typeof apiClient.getPopular>>['body']
 
 interface StockItem {
-  symbol: string;
-  quote: StockQuote;
+  symbol: string
+  quote: StockQuote
 }
 
 interface PopularStocksData {
-  stocks: StockItem[];
+  stocks: StockItem[]
 }
 
 export const Route = createFileRoute('/')({
@@ -46,9 +46,7 @@ function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-          📊 Popular Stocks
-        </h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">📊 Popular Stocks</h1>
         <p className="text-gray-600 dark:text-gray-400">
           Real-time market data updated every 10 seconds
         </p>

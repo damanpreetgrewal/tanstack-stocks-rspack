@@ -1,10 +1,10 @@
-import { betterAuth } from "better-auth"
-import { prismaAdapter } from "better-auth/adapters/prisma"
-import { prisma } from "./prisma"
+import { betterAuth } from 'better-auth'
+import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { prisma } from './prisma'
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
-    provider: "mongodb",
+    provider: 'mongodb',
   }),
   emailAndPassword: {
     enabled: true,
@@ -12,23 +12,21 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
       enabled: !!process.env.GOOGLE_CLIENT_ID && !!process.env.GOOGLE_CLIENT_SECRET,
     },
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID || "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+      clientId: process.env.GITHUB_CLIENT_ID || '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
       enabled: !!process.env.GITHUB_CLIENT_ID && !!process.env.GITHUB_CLIENT_SECRET,
     },
   },
-  baseURL: "http://localhost:3000/api/auth",
-  trustedOrigins: [
-    process.env.WEB_URL || "http://localhost:4200",
-  ],
+  baseURL: 'http://localhost:3000/api/auth',
+  trustedOrigins: [process.env.WEB_URL || 'http://localhost:4200'],
   redirects: {
-    afterSignIn: `${process.env.WEB_URL || "http://localhost:4200"}/`,
-    afterSignUp: `${process.env.WEB_URL || "http://localhost:4200"}/`,
+    afterSignIn: `${process.env.WEB_URL || 'http://localhost:4200'}/`,
+    afterSignUp: `${process.env.WEB_URL || 'http://localhost:4200'}/`,
   },
   session: {
     cookieCache: {
@@ -38,11 +36,11 @@ export const auth = betterAuth({
   },
   advanced: {},
   cookieOptions: {
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    path: "/",
+    path: '/',
   },
 })
 
-export type Auth = typeof auth;
+export type Auth = typeof auth
