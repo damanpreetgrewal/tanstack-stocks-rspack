@@ -6,8 +6,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { createExpressEndpoints } from '@ts-rest/express';
-import { stocksContract } from '@stocks/contracts';
+import { stocksContract, watchlistContract } from '@stocks/contracts';
 import { stocksRouteHandlers } from './routes/stocks';
+import { watchlistRouteHandlers } from './routes/watchlist';
 import { errorHandler } from './errors';
 import { logger } from './logger';
 
@@ -50,6 +51,17 @@ createExpressEndpoints(
     getPopular: stocksRouteHandlers.getPopular,
     getProfile: stocksRouteHandlers.getProfile,
     getHistorical: stocksRouteHandlers.getHistorical,
+  },
+  apiRouter
+);
+
+createExpressEndpoints(
+  watchlistContract,
+  {
+    getWatchlist: watchlistRouteHandlers.getWatchlist,
+    addToWatchlist: watchlistRouteHandlers.addToWatchlist,
+    removeFromWatchlist: watchlistRouteHandlers.removeFromWatchlist,
+    clearWatchlist: watchlistRouteHandlers.clearWatchlist,
   },
   apiRouter
 );
