@@ -7,11 +7,79 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id            String    @id @default(uuid()) @map("_id")
+  name          String?
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  sessions      Session[]
+  accounts      Account[]
+  watchlists    Watchlist[]
+  
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @map("_id")
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                   String   @id @default(uuid()) @map("_id")
+  userId               String
+  accountId            String
+  providerId           String
+  accessToken          String?
+  refreshToken         String?
+  idToken              String?
+  accessTokenExpiresAt DateTime?
+  expiresAt            DateTime?
+  password             String?
+  scope                String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([providerId, accountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(uuid()) @map("_id")
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  @@unique([identifier, value])
+  @@map("verifications")
+}
+
 model Watchlist {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String
+  userId    String    @db.ObjectId
   ticker    String
   createdAt DateTime  @default(now())
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@unique([userId, ticker])
   @@index([userId])

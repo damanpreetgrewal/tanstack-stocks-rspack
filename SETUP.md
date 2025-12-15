@@ -52,7 +52,7 @@ npm run prisma:studio
 ## Step 6: Run Development Servers
 
 ```bash
-# Start both API (3000) and Web (5173)
+# Start both API (3000) and Web (4200)
 npm run dev
 
 # Or run separately:
@@ -62,7 +62,7 @@ npm run web    # Web only
 
 ## Step 7: Open in Browser
 
-- **Frontend**: http://localhost:5173
+- **Frontend**: http://localhost:4200
 - **API Health**: http://localhost:3000/health
 - **API Routes**: http://localhost:3000/api
 
@@ -88,7 +88,7 @@ npm install
 # Or kill process: npx kill-port 3000
 ```
 
-### "Port 5173 already in use"
+### "Port 4200 already in use"
 ```bash
 npm run web -- --port 3001
 ```
@@ -181,7 +181,7 @@ FINNHUB_API_KEY=your_api_key
 # Backend
 NODE_ENV=development
 PORT=3000
-CORS_ORIGIN=http://localhost:5173
+CORS_ORIGIN=http://localhost:4200
 
 # Frontend
 API_URL=http://localhost:3000/api
@@ -202,7 +202,7 @@ API_URL=http://localhost:3000/api
 3. ✅ Create `.env.local`
 4. ✅ Run `npm run prisma:generate`
 5. ✅ Run `npm run dev`
-6. 🔜 Explore the app at http://localhost:5173
+6. 🔜 Explore the app at http://localhost:4200
 
 ## Support
 

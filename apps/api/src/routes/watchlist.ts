@@ -1,5 +1,6 @@
 import { prisma } from '../prisma';
 import { logger } from '../logger';
+import { AuthenticatedRequest } from '../middleware';
 
 interface WatchlistParams {
   userId: string;
@@ -11,11 +12,11 @@ interface AddToWatchlistBody {
 }
 
 export const watchlistRouteHandlers = {
-  getWatchlist: async ({ params }: { params: WatchlistParams }) => {
-    const { userId } = params;
+  getWatchlist: async ({ req }: { params: WatchlistParams; req: AuthenticatedRequest }) => {
+    const userId = req.user?.id;
 
     if (!userId) {
-      return { status: 400, body: { error: 'User ID is required' } } as const;
+      return { status: 401, body: { error: 'Unauthorized - Please login' } } as const;
     }
 
     try {
@@ -31,7 +32,10 @@ export const watchlistRouteHandlers = {
       return {
         status: 200,
         body: {
-          watchlist: watchlistItems,
+          watchlist: watchlistItems.map(item => ({
+            ticker: item.ticker,
+            createdAt: item.createdAt.toISOString(),
+          })),
         },
       } as const;
     } catch (error) {
@@ -44,17 +48,18 @@ export const watchlistRouteHandlers = {
   },
 
   addToWatchlist: async ({
-    params,
+    req,
     body,
   }: {
     params: WatchlistParams;
     body: AddToWatchlistBody;
+    req: AuthenticatedRequest;
   }) => {
-    const { userId } = params;
+    const userId = req.user?.id;
     const { ticker } = body;
 
     if (!userId) {
-      return { status: 400, body: { error: 'User ID is required' } } as const;
+      return { status: 401, body: { error: 'Unauthorized - Please login' } } as const;
     }
 
     if (!ticker || ticker.trim() === '') {
@@ -92,7 +97,10 @@ export const watchlistRouteHandlers = {
 
       return {
         status: 201,
-        body: watchlistItem,
+        body: {
+          ticker: watchlistItem.ticker,
+          createdAt: watchlistItem.createdAt.toISOString(),
+        },
       } as const;
     } catch (error) {
       logger.error('Error adding to watchlist:', error);
@@ -103,11 +111,12 @@ export const watchlistRouteHandlers = {
     }
   },
 
-  removeFromWatchlist: async ({ params }: { params: WatchlistParams & { ticker: string } }) => {
-    const { userId, ticker } = params;
+  removeFromWatchlist: async ({ params, req }: { params: WatchlistParams & { ticker: string }; req: AuthenticatedRequest }) => {
+    const userId = req.user?.id;
+    const { ticker } = params;
 
     if (!userId) {
-      return { status: 400, body: { error: 'User ID is required' } } as const;
+      return { status: 401, body: { error: 'Unauthorized - Please login' } } as const;
     }
 
     if (!ticker) {
@@ -150,11 +159,11 @@ export const watchlistRouteHandlers = {
     }
   },
 
-  clearWatchlist: async ({ params }: { params: WatchlistParams }) => {
-    const { userId } = params;
+  clearWatchlist: async ({ req }: { params: WatchlistParams; req: AuthenticatedRequest }) => {
+    const userId = req.user?.id;
 
     if (!userId) {
-      return { status: 400, body: { error: 'User ID is required' } } as const;
+      return { status: 401, body: { error: 'Unauthorized - Please login' } } as const;
     }
 
     try {

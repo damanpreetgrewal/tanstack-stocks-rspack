@@ -3,13 +3,22 @@ import { useEffect, useState } from 'react';
 import { useStockQuote } from '../../lib/queries';
 import { watchlistHelpers, watchlistStore } from '../../lib/store';
 import { notify } from '../../lib/notifications';
+import { useSession } from '../../lib/auth-client';
 
 export const Route = createFileRoute('/watchlist/')({
   component: Watchlist,
 });
 
 function Watchlist() {
+  const { data: session, isPending } = useSession();
   const [watchlist, setWatchlist] = useState<string[]>(watchlistHelpers.getAll());
+
+  // Redirect to auth if not logged in
+  useEffect(() => {
+    if (!isPending && !session?.user) {
+      window.location.href = '/auth';
+    }
+  }, [session, isPending]);
 
   useEffect(() => {
     // Subscribe to watchlist changes
@@ -28,6 +37,18 @@ function Watchlist() {
       notify.success('Watchlist cleared');
     }
   };
+
+  if (isPending) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-gray-600 dark:text-gray-400">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!session?.user) {
+    return null; // Will redirect
+  }
 
   return (
     <div className="space-y-4">

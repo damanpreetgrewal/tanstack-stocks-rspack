@@ -9,6 +9,8 @@ import { createExpressEndpoints } from '@ts-rest/express';
 import { stocksContract, watchlistContract } from '@stocks/contracts';
 import { stocksRouteHandlers } from './routes/stocks';
 import { watchlistRouteHandlers } from './routes/watchlist';
+import { authRouter } from './routes/auth';
+import { requireAuth } from './middleware';
 import { errorHandler } from './errors';
 import { logger } from './logger';
 
@@ -40,6 +42,9 @@ app.get('/health', (_, res) => {
   res.json({ status: 'ok' });
 });
 
+// Auth routes (better-auth handles these)
+app.use('/api/auth', authRouter);
+
 // API Routes
 const apiRouter = express.Router();
 
@@ -55,6 +60,10 @@ createExpressEndpoints(
   apiRouter
 );
 
+// Watchlist routes require authentication
+const watchlistRouter = express.Router();
+watchlistRouter.use(requireAuth);
+
 createExpressEndpoints(
   watchlistContract,
   {
@@ -63,10 +72,11 @@ createExpressEndpoints(
     removeFromWatchlist: watchlistRouteHandlers.removeFromWatchlist,
     clearWatchlist: watchlistRouteHandlers.clearWatchlist,
   },
-  apiRouter
+  watchlistRouter
 );
 
 app.use('/api', apiRouter);
+app.use('/api', watchlistRouter);
 
 // 404 handler
 app.use((_, res) => {
@@ -88,7 +98,7 @@ app.listen(PORT_NUMBER, async () => {
   
   // Test database connection
   try {
-    await prisma.user.findFirst();
+    await prisma.watchlist.findFirst();
     logger.info('✅ Database connection verified');
   } catch (error) {
     logger.warn('⚠️ Database connection test skipped (first query)');

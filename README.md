@@ -7,6 +7,8 @@ A **production-ready, fully-featured** stocks dashboard demonstrating **ALL mode
 - ✅ **TanStack Form** - Advanced form state with validation
 - ✅ **TanStack Virtual** - Virtualized lists (5000+ stocks smoothly)
 - ✅ **TanStack Store** - Watchlist reactive state with persistence
+- ✅ **Better-Auth** - Email/Password + Google/GitHub OAuth
+- ✅ **User-specific watchlists** - MongoDB with Prisma
 - ✅ **React 19** + **Rspack** (5x faster than Webpack!)
 - ✅ **Notifications** (Sonner)
 - ✅ **Express API** with **ts-rest** contracts + **Zod** validation
@@ -61,41 +63,48 @@ This project is a **complete reference implementation** showing:
 
 ## 📂 Project Structure
 
+**Architecture:** Single-page React application (port 4200) + Express API (port 3000)
+
 ```
 tanstack-stocks-rspack/
 ├── apps/
-│   ├── api/                          # Express + ts-rest backend
+│   ├── api/                          # Express + ts-rest backend (port 3000)
 │   │   ├── src/
 │   │   │   ├── main.ts              # Express setup
+│   │   │   ├── auth.ts              # better-auth configuration
 │   │   │   ├── finnhub.ts           # Stock API client
-│   │   │   ├── routes/stocks.ts     # ts-rest handlers
+│   │   │   ├── routes/
+│   │   │   │   ├── stocks.ts        # Stock endpoints
+│   │   │   │   ├── watchlist.ts     # User watchlist endpoints
+│   │   │   │   └── auth.ts          # Auth endpoints
 │   │   │   ├── prisma.ts            # DB connection
 │   │   │   └── errors.ts            # Error handling
 │   │   ├── prisma/schema.prisma     # MongoDB schema
 │   │   └── package.json
 │   │
-│   └── web/                          # React 19 + Rspack
+│   └── web/                          # React 19 + Rsbuild (port 4200)
 │       ├── src/
 │       │   ├── main.tsx             # React entry
 │       │   ├── App.tsx              # Root component
-│       │   ├── router.tsx           # All route definitions + loaders
+│       │   ├── router.tsx           # Router configuration
 │       │   ├── routes/
 │       │   │   ├── __root.tsx       # Root layout
 │       │   │   ├── index.tsx        # Dashboard with loader
+│       │   │   ├── auth.tsx         # Login/Register page
 │       │   │   ├── stocks/
 │       │   │   │   ├── index.tsx    # Search with params validation
 │       │   │   │   └── $symbol.tsx  # Detail with loader + live updates
 │       │   │   └── watchlist/
-│       │   │       └── index.tsx    # Watchlist with Store
+│       │   │       └── index.tsx    # User's watchlist
 │       │   ├── components/
-│       │   │   ├── Navigation.tsx
+│       │   │   ├── Navigation.tsx   # Nav with auth state
 │       │   │   └── StockCard.tsx
 │       │   ├── lib/
 │       │   │   ├── api-client.ts    # ts-rest client
+│       │   │   ├── auth-client.ts   # better-auth client
 │       │   │   ├── queries.ts       # Query hooks
 │       │   │   ├── store.ts         # TanStack Store
-│       │   │   ├── notifications.ts # Sonner toast
-│       │   │   └── performance.ts   # Web Vitals
+│       │   │   └── notifications.ts # Sonner toast
 │       │   └── styles/index.css
 │       ├── rspack.config.ts         # Rspack bundler config
 │       ├── tailwind.config.js
@@ -117,6 +126,7 @@ tanstack-stocks-rspack/
 | Document | What You'll Learn |
 |----------|------------------|
 | [SETUP.md](SETUP.md) | Installation & quickstart |
+| [AUTH_SETUP.md](AUTH_SETUP.md) | **Authentication setup** - Google/GitHub OAuth, email/password |
 | [TANSTACK_ROUTER_GUIDE.md](TANSTACK_ROUTER_GUIDE.md) | **Router deep dive** - loaders, params, search, getRouteApi() |
 | [TANSTACK_LIBRARIES.md](TANSTACK_LIBRARIES.md) | **All libraries** - complete patterns for each |
 | [PATTERNS_COOKBOOK.md](PATTERNS_COOKBOOK.md) | **Copy-paste ready** - solutions to common problems |
@@ -137,17 +147,22 @@ cd tanstack-stocks-rspack
 npm install
 
 # 2. Configure environment
-cp .env.example .env.local
-# Edit .env.local with MongoDB URL + Finnhub API key
+cp .env.example .env
+# Edit .env with MongoDB URL + Finnhub API key
 
-# 3. Generate Prisma client
-npm run prisma:generate
+# 3. Generate Prisma client & sync database
+cd apps/api
+npx prisma generate
+npx prisma db push
+cd ../..
 
-# 4. Start development
+# 4. Start development servers
 npm run dev
-# API: http://localhost:3000
-# Web: http://localhost:5173
 ```
+
+**Access the app:**
+- **Web UI**: http://localhost:4200
+- **API**: http://localhost:3000
 
 See [SETUP.md](SETUP.md) for detailed instructions.
 

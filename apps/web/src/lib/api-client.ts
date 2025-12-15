@@ -16,6 +16,7 @@ const API_URL = import.meta.env.API_URL || 'http://localhost:3000/api';
 const axiosInstance = axios.create({
   baseURL: API_URL,
   timeout: 10000,
+  withCredentials: true, // Include cookies for auth
 });
 
 // Add request interceptor for logging

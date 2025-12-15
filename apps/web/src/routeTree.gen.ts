@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NotFoundRouteImport } from './routes/not-found'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WatchlistIndexRouteImport } from './routes/watchlist/index'
 import { Route as StocksIndexRouteImport } from './routes/stocks/index'
@@ -18,6 +19,11 @@ import { Route as StocksSymbolRouteImport } from './routes/stocks/$symbol'
 const NotFoundRoute = NotFoundRouteImport.update({
   id: '/not-found',
   path: '/not-found',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -43,6 +49,7 @@ const StocksSymbolRoute = StocksSymbolRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/not-found': typeof NotFoundRoute
   '/stocks/$symbol': typeof StocksSymbolRoute
   '/stocks': typeof StocksIndexRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/not-found': typeof NotFoundRoute
   '/stocks/$symbol': typeof StocksSymbolRoute
   '/stocks': typeof StocksIndexRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/not-found': typeof NotFoundRoute
   '/stocks/$symbol': typeof StocksSymbolRoute
   '/stocks/': typeof StocksIndexRoute
@@ -65,12 +74,25 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/not-found' | '/stocks/$symbol' | '/stocks' | '/watchlist'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/not-found'
+    | '/stocks/$symbol'
+    | '/stocks'
+    | '/watchlist'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/not-found' | '/stocks/$symbol' | '/stocks' | '/watchlist'
+  to:
+    | '/'
+    | '/auth'
+    | '/not-found'
+    | '/stocks/$symbol'
+    | '/stocks'
+    | '/watchlist'
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/not-found'
     | '/stocks/$symbol'
     | '/stocks/'
@@ -79,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   NotFoundRoute: typeof NotFoundRoute
   StocksSymbolRoute: typeof StocksSymbolRoute
   StocksIndexRoute: typeof StocksIndexRoute
@@ -92,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/not-found'
       fullPath: '/not-found'
       preLoaderRoute: typeof NotFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -127,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   NotFoundRoute: NotFoundRoute,
   StocksSymbolRoute: StocksSymbolRoute,
   StocksIndexRoute: StocksIndexRoute,
