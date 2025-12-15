@@ -23,7 +23,7 @@ export const finnhubClient = {
       });
       return data;
     } catch (error) {
-      logger.error(`Error fetching quote for ${symbol}:`, error);
+      logger.error(`Error fetching quote for ${symbol}:`);
       throw error;
     }
   },
@@ -47,7 +47,7 @@ export const finnhubClient = {
       });
       return data;
     } catch (error) {
-      logger.error(`Error fetching profile for ${symbol}:`, error);
+      logger.error(`Error fetching profile for ${symbol}:`);
       throw error;
     }
   },
@@ -68,7 +68,7 @@ export const finnhubClient = {
       });
       return data;
     } catch (error) {
-      logger.error(`Error fetching candles for ${symbol}:`, error);
+      logger.error(`Error fetching candles for ${symbol}:`);
       throw error;
     }
   },

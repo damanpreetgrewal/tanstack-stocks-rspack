@@ -11,7 +11,7 @@
     "lint": "eslint src --ext .ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.7.0",
+    "@prisma/client": "6.19.0",
     "@stocks/contracts": "*",
     "@ts-rest/core": "^3.49.0",
     "@ts-rest/express": "^3.49.0",
@@ -31,7 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
     "eslint": "^8.54.0",
-    "prisma": "^5.7.0",
+    "prisma": "6.19.0",
     "tsx": "^4.7.0",
     "typescript": "^5.5.0"
   }
