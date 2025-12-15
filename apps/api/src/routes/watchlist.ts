@@ -27,7 +27,7 @@ export const watchlistRouteHandlers = {
       return {
         status: 200,
         body: {
-          watchlist: watchlistItems.map(item => ({
+          watchlist: watchlistItems.map((item: { ticker: string; createdAt: Date }) => ({
             ticker: item.ticker,
             createdAt: item.createdAt.toISOString(),
           })),
