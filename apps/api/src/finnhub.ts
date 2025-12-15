@@ -1,18 +1,18 @@
-import axios from 'axios';
-import { StockQuote, Stock } from '@stocks/contracts';
-import { logger } from './logger';
+import axios from 'axios'
+import { StockQuote, Stock } from '@stocks/contracts'
+import { logger } from './logger'
 
-const FINNHUB_BASE_URL = 'https://finnhub.io/api/v1';
+const FINNHUB_BASE_URL = 'https://finnhub.io/api/v1'
 const client = axios.create({
   baseURL: FINNHUB_BASE_URL,
-});
+})
 
 function getApiToken() {
-  const token = process.env.FINNHUB_API_KEY;
+  const token = process.env.FINNHUB_API_KEY
   if (!token) {
-    logger.warn('⚠️  FINNHUB_API_KEY not set. API calls will fail.');
+    logger.warn('⚠️  FINNHUB_API_KEY not set. API calls will fail.')
   }
-  return token;
+  return token
 }
 
 export const finnhubClient = {
@@ -20,11 +20,11 @@ export const finnhubClient = {
     try {
       const { data } = await client.get('/quote', {
         params: { token: getApiToken(), symbol: symbol.toUpperCase() },
-      });
-      return data;
+      })
+      return data
     } catch (error) {
-      logger.error(`Error fetching quote for ${symbol}:`);
-      throw error;
+      logger.error(`Error fetching quote for ${symbol}:`)
+      throw error
     }
   },
 
@@ -32,11 +32,11 @@ export const finnhubClient = {
     try {
       const { data } = await client.get('/search', {
         params: { token: getApiToken(), q: query },
-      });
-      return data.result || [];
+      })
+      return data.result || []
     } catch (error) {
-      logger.error(`Error searching stocks for "${query}":`, error);
-      throw error;
+      logger.error(`Error searching stocks for "${query}":`, error)
+      throw error
     }
   },
 
@@ -44,11 +44,11 @@ export const finnhubClient = {
     try {
       const { data } = await client.get('/stock/profile2', {
         params: { token: getApiToken(), symbol: symbol.toUpperCase() },
-      });
-      return data;
+      })
+      return data
     } catch (error) {
-      logger.error(`Error fetching profile for ${symbol}:`);
-      throw error;
+      logger.error(`Error fetching profile for ${symbol}:`)
+      throw error
     }
   },
 
@@ -65,11 +65,11 @@ export const finnhubClient = {
           resolution,
           count,
         },
-      });
-      return data;
+      })
+      return data
     } catch (error) {
-      logger.error(`Error fetching candles for ${symbol}:`);
-      throw error;
+      logger.error(`Error fetching candles for ${symbol}:`)
+      throw error
     }
   },
-};
+}

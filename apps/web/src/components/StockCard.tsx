@@ -1,8 +1,8 @@
-import { Link } from '@tanstack/react-router';
-import { StockQuote } from '@stocks/contracts';
-import { watchlistHelpers } from '../lib/store';
-import { notify } from '../lib/notifications';
-import { useState } from 'react';
+import { Link } from '@tanstack/react-router'
+import { StockQuote } from '@stocks/contracts'
+import { watchlistHelpers } from '../lib/store'
+import { notify } from '../lib/notifications'
+import { useState } from 'react'
 
 interface StockCardProps {
   symbol: string;
@@ -13,32 +13,32 @@ interface StockCardProps {
 export function StockCard({ symbol, quote, onViewDetails }: StockCardProps) {
   const [isInWatchlist, setIsInWatchlist] = useState(
     watchlistHelpers.has(symbol)
-  );
+  )
 
-  const change = ((quote.c - quote.pc) / quote.pc) * 100;
+  const change = ((quote.c - quote.pc) / quote.pc) * 100
   const changeClass =
     change >= 0
       ? 'text-green-600 dark:text-green-400'
-      : 'text-red-600 dark:text-red-400';
+      : 'text-red-600 dark:text-red-400'
 
   const handleWatchlistToggle = (e: React.MouseEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (isInWatchlist) {
-      watchlistHelpers.remove(symbol);
-      notify.success(`${symbol} removed from watchlist`);
+      watchlistHelpers.remove(symbol)
+      notify.success(`${symbol} removed from watchlist`)
     } else {
-      watchlistHelpers.add(symbol);
-      notify.success(`${symbol} added to watchlist`);
+      watchlistHelpers.add(symbol)
+      notify.success(`${symbol} added to watchlist`)
     }
-    setIsInWatchlist(!isInWatchlist);
-  };
+    setIsInWatchlist(!isInWatchlist)
+  }
 
   return (
-    // @ts-ignore - Dynamic route path
+    // @ts-expect-error - Dynamic route path
     <Link to={`/stocks/${symbol}`} onClick={(e) => {
       if (onViewDetails) {
-        e.preventDefault();
-        onViewDetails();
+        e.preventDefault()
+        onViewDetails()
       }
     }}>
       <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800 hover:shadow-lg transition cursor-pointer h-full flex flex-col">
@@ -73,5 +73,5 @@ export function StockCard({ symbol, quote, onViewDetails }: StockCardProps) {
         </div>
       </div>
     </Link>
-  );
+  )
 }

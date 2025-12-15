@@ -1,11 +1,11 @@
-import { QueryClient } from '@tanstack/react-query';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { RouterProvider } from '@tanstack/react-router';
-import { useEffect } from 'react';
-import { router } from './router';
-import { initializeWatchlist } from './lib/store';
-import { Toaster } from 'sonner';
-import './index.css';
+import { QueryClient } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { RouterProvider } from '@tanstack/react-router'
+import { useEffect } from 'react'
+import { router } from './router'
+import { initializeWatchlist } from './lib/store'
+import { Toaster } from 'sonner'
+import './index.css'
 
 // Create a client for react-query
 const queryClient = new QueryClient({
@@ -16,22 +16,22 @@ const queryClient = new QueryClient({
       retry: 1,
     },
   },
-});
+})
 
 function App() {
   useEffect(() => {
     // Initialize watchlist from database on app load
     initializeWatchlist().catch((error) => {
-      console.error('Failed to initialize watchlist:', error);
-    });
-  }, []);
+      console.error('Failed to initialize watchlist:', error)
+    })
+  }, [])
 
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <Toaster position="top-right" />
     </QueryClientProvider>
-  );
+  )
 }
 
-export default App;
+export default App

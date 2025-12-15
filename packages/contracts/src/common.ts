@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 // Stock base schema
 export const StockSchema = z.object({
@@ -6,7 +6,7 @@ export const StockSchema = z.object({
   description: z.string(),
   displaySymbol: z.string(),
   type: z.string(),
-});
+})
 
 // Stock quote schema
 export const StockQuoteSchema = z.object({
@@ -16,7 +16,7 @@ export const StockQuoteSchema = z.object({
   o: z.number().describe('Open price'),
   pc: z.number().describe('Previous close'),
   t: z.number().describe('Timestamp'),
-});
+})
 
 // Company profile schema
 export const CompanyProfileSchema = z.object({
@@ -32,7 +32,7 @@ export const CompanyProfileSchema = z.object({
   shareOutstanding: z.number().optional(),
   ticker: z.string(),
   weburl: z.string().optional(),
-});
+})
 
 export type Stock = z.infer<typeof StockSchema>;
 export type StockQuote = z.infer<typeof StockQuoteSchema>;

@@ -1,17 +1,17 @@
-import { useRef, useCallback } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { useForm } from '@tanstack/react-form';
-import { z } from 'zod';
-import { apiClient } from '../../lib/api-client';
-import { useMemo } from 'react';
+import { useRef, useCallback } from 'react'
+import { createFileRoute } from '@tanstack/react-router'
+import { useVirtualizer } from '@tanstack/react-virtual'
+import { useForm } from '@tanstack/react-form'
+import { z } from 'zod'
+import { apiClient } from '../../lib/api-client'
+import { useMemo } from 'react'
 
 const stocksSearchParamsSchema = z.object({
   q: z.string().optional().default(''),
   sortBy: z.enum(['symbol', 'name']).optional().default('symbol'),
   sortOrder: z.enum(['asc', 'desc']).optional().default('asc'),
   page: z.number().optional().default(1),
-});
+})
 
 type Stock = {
   symbol: string;
@@ -33,23 +33,23 @@ export const Route = createFileRoute('/stocks/')({
   loader: async ({ deps: { q, sortBy, sortOrder } }) => {
     // Avoid hitting the API when no query is provided; show empty state instead
     if (!q?.trim()) {
-      return { results: { results: [], total: 0 } };
+      return { results: { results: [], total: 0 } }
     }
 
     const response = await apiClient.searchStocks({
       query: { q, sortBy, sortOrder },
-    });
-    return { results: response.body };
+    })
+    return { results: response.body }
   },
   component: StocksList,
-});
+})
 
 function StocksList() {
-  const navigate = Route.useNavigate();
-  const search = Route.useSearch() as SearchParams;
-  const loaderData = Route.useLoaderData() as LoaderData;
+  const navigate = Route.useNavigate()
+  const search = Route.useSearch() as SearchParams
+  const loaderData = Route.useLoaderData() as LoaderData
 
-  const parentRef = useRef<HTMLDivElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null)
 
   // Form for search params
   const form = useForm({
@@ -68,37 +68,37 @@ function StocksList() {
           sortOrder: values.value.sortOrder,
           page: 1,
         },
-      });
+      })
     },
-  });
+  })
 
-  const stocks = loaderData.results.results || [];
+  const stocks = loaderData.results.results || []
 
   const sortedStocks = useMemo(() => {
-    const items = [...stocks];
-    const key = search.sortBy === 'name' ? 'description' : 'symbol';
-    const direction = search.sortOrder === 'desc' ? -1 : 1;
+    const items = [...stocks]
+    const key = search.sortBy === 'name' ? 'description' : 'symbol'
+    const direction = search.sortOrder === 'desc' ? -1 : 1
 
     items.sort((a, b) => {
-      const av = key === 'description' ? a.description.toLowerCase() : a.symbol.toLowerCase();
-      const bv = key === 'description' ? b.description.toLowerCase() : b.symbol.toLowerCase();
-      if (av < bv) return -1 * direction;
-      if (av > bv) return 1 * direction;
-      return 0;
-    });
+      const av = key === 'description' ? a.description.toLowerCase() : a.symbol.toLowerCase()
+      const bv = key === 'description' ? b.description.toLowerCase() : b.symbol.toLowerCase()
+      if (av < bv) return -1 * direction
+      if (av > bv) return 1 * direction
+      return 0
+    })
 
-    return items;
-  }, [stocks, search.sortBy, search.sortOrder]);
+    return items
+  }, [stocks, search.sortBy, search.sortOrder])
 
   const virtualizer = useVirtualizer({
     count: sortedStocks.length,
     getScrollElement: () => parentRef.current,
     estimateSize: useCallback(() => 80, []),
     overscan: 10,
-  });
+  })
 
-  const virtualItems = virtualizer.getVirtualItems();
-  const totalSize = virtualizer.getTotalSize();
+  const virtualItems = virtualizer.getVirtualItems()
+  const totalSize = virtualizer.getTotalSize()
 
   return (
     <div className="space-y-6">
@@ -114,8 +114,8 @@ function StocksList() {
       {/* Advanced form with TanStack Form */}
       <form
         onSubmit={(e) => {
-          e.preventDefault();
-          form.handleSubmit();
+          e.preventDefault()
+          form.handleSubmit()
         }}
         className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800 space-y-4"
       >
@@ -202,7 +202,7 @@ function StocksList() {
         >
           <div style={{ height: `${totalSize}px`, width: '100%', position: 'relative' }}>
             {virtualItems.map((virtualItem) => {
-              const stock = sortedStocks[virtualItem.index];
+              const stock = sortedStocks[virtualItem.index]
               return (
                 <div
                   key={stock.symbol}
@@ -228,11 +228,11 @@ function StocksList() {
                     </p>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         </div>
       )}
     </div>
-  );
+  )
 }

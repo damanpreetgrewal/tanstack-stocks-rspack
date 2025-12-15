@@ -1,14 +1,14 @@
-import { initContract } from '@ts-rest/core';
-import { z } from 'zod';
+import { initContract } from '@ts-rest/core'
+import { z } from 'zod'
 
-const c = initContract();
+const c = initContract()
 
 const WatchlistSchema = z.array(
   z.object({
     ticker: z.string(),
     createdAt: z.string().datetime(),
   })
-);
+)
 
 export const watchlistContract = c.router({
   // Get user's watchlist
@@ -70,6 +70,6 @@ export const watchlistContract = c.router({
       500: z.object({ error: z.string() }),
     },
   },
-});
+})
 
 export type WatchlistContract = typeof watchlistContract;

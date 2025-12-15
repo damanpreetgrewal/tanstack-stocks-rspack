@@ -4,21 +4,21 @@
  * @returns Initials (up to 2 characters)
  */
 export function getInitials(name: string | null | undefined): string {
-  if (!name) return "U";
+  if (!name) return "U"
   
-  const parts = name.trim().split(/\s+/);
-  if (parts.length === 0) return "U";
-  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  const parts = name.trim().split(/\s+/)
+  if (parts.length === 0) return "U"
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase()
   
   // Return first letter of first and last name
-  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase()
 }
 
 /**
  * Get avatar color based on name for consistent coloring
  */
 export function getAvatarColor(name: string | null | undefined): string {
-  if (!name) return "bg-gray-500";
+  if (!name) return "bg-gray-500"
   
   const colors = [
     "bg-red-500",
@@ -29,11 +29,11 @@ export function getAvatarColor(name: string | null | undefined): string {
     "bg-pink-500",
     "bg-indigo-500",
     "bg-cyan-500",
-  ];
+  ]
   
   const hash = name.split("").reduce((acc, char) => {
-    return acc + char.charCodeAt(0);
-  }, 0);
+    return acc + char.charCodeAt(0)
+  }, 0)
   
-  return colors[hash % colors.length];
+  return colors[hash % colors.length]
 }

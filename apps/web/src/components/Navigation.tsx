@@ -1,17 +1,17 @@
-import { Link, useNavigate } from '@tanstack/react-router';
-import { useSession, signOut } from '../lib/auth-client';
-import { getInitials, getAvatarColor } from '../lib/avatar-utils';
-import { toast } from 'sonner';
+import { Link, useNavigate } from '@tanstack/react-router'
+import { useSession, signOut } from '../lib/auth-client'
+import { getInitials, getAvatarColor } from '../lib/avatar-utils'
+import { toast } from 'sonner'
 
 export function Navigation() {
-  const { data: session } = useSession();
-  const navigate = useNavigate();
+  const { data: session } = useSession()
+  const navigate = useNavigate()
 
   const handleSignOut = async () => {
-    await signOut();
-    toast.success('Signed out successfully');
-    navigate({ to: '/' });
-  };
+    await signOut()
+    toast.success('Signed out successfully')
+    navigate({ to: '/' })
+  }
 
   return (
     <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
@@ -81,5 +81,5 @@ export function Navigation() {
         </div>
       </div>
     </nav>
-  );
+  )
 }

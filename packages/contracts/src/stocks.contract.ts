@@ -1,12 +1,12 @@
-import { initContract } from '@ts-rest/core';
-import { z } from 'zod';
+import { initContract } from '@ts-rest/core'
+import { z } from 'zod'
 import {
   StockSchema,
   StockQuoteSchema,
   CompanyProfileSchema,
-} from './common';
+} from './common'
 
-const c = initContract();
+const c = initContract()
 
 export const stocksContract = c.router({
   // Get stock quote
@@ -95,6 +95,6 @@ export const stocksContract = c.router({
       500: z.object({ error: z.string() }),
     },
   },
-});
+})
 
 export type StocksContract = typeof stocksContract;

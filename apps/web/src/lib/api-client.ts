@@ -1,6 +1,6 @@
-import { initClient } from '@ts-rest/core';
-import { stocksContract } from '@stocks/contracts';
-import axios from 'axios';
+import { initClient } from '@ts-rest/core'
+import { stocksContract } from '@stocks/contracts'
+import axios from 'axios'
 
 type ApiRequest = {
   method: string;
@@ -11,28 +11,28 @@ type ApiRequest = {
   headers?: Record<string, string>;
 };
 
-const API_URL = import.meta.env.API_URL || 'http://localhost:3000/api';
+const API_URL = import.meta.env.API_URL || 'http://localhost:3000/api'
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
   timeout: 10000,
   withCredentials: true, // Include cookies for auth
-});
+})
 
 // Add request interceptor for logging
 axiosInstance.interceptors.request.use((config) => {
-  console.log(`📡 ${config.method?.toUpperCase()} ${config.url}`);
-  return config;
-});
+  console.log(`📡 ${config.method?.toUpperCase()} ${config.url}`)
+  return config
+})
 
 // Add response interceptor for error handling
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error(`❌ API Error:`, error.response?.data || error.message);
-    throw error;
+    console.error(`❌ API Error:`, error.response?.data || error.message)
+    throw error
   }
-);
+)
 
 export const apiClient = initClient(stocksContract, {
   baseUrl: API_URL,
@@ -43,7 +43,7 @@ export const apiClient = initClient(stocksContract, {
       data: args.body,
       // Use query for search params; params is for path params in ts-rest args
       params: args.query ?? args.params,
-    });
+    })
     return { 
       status: response.status, 
       body: response.data,
@@ -52,6 +52,6 @@ export const apiClient = initClient(stocksContract, {
           ([k, v]) => [k, String(v)] as [string, string],
         ),
       ),
-    };
+    }
   },
-});
+})
