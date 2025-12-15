@@ -14,12 +14,12 @@ export const watchlistContract = c.router({
   // Get user's watchlist
   getWatchlist: {
     method: 'GET',
-    path: '/watchlist/:userId',
+    path: '/watchlist',
     responses: {
       200: z.object({
         watchlist: WatchlistSchema,
       }),
-      400: z.object({ error: z.string() }),
+      401: z.object({ error: z.string() }),
       500: z.object({ error: z.string() }),
     },
   },
@@ -27,7 +27,7 @@ export const watchlistContract = c.router({
   // Add ticker to watchlist
   addToWatchlist: {
     method: 'POST',
-    path: '/watchlist/:userId',
+    path: '/watchlist',
     body: z.object({
       ticker: z.string().min(1),
     }),
@@ -37,6 +37,7 @@ export const watchlistContract = c.router({
         createdAt: z.string().datetime(),
       }),
       400: z.object({ error: z.string() }),
+      401: z.object({ error: z.string() }),
       409: z.object({ error: z.string() }), // Already exists
       500: z.object({ error: z.string() }),
     },
@@ -45,12 +46,13 @@ export const watchlistContract = c.router({
   // Remove ticker from watchlist
   removeFromWatchlist: {
     method: 'DELETE',
-    path: '/watchlist/:userId/:ticker',
+    path: '/watchlist/:ticker',
     responses: {
       200: z.object({
         message: z.string(),
       }),
       400: z.object({ error: z.string() }),
+      401: z.object({ error: z.string() }),
       404: z.object({ error: z.string() }),
       500: z.object({ error: z.string() }),
     },
@@ -59,12 +61,12 @@ export const watchlistContract = c.router({
   // Clear entire watchlist
   clearWatchlist: {
     method: 'DELETE',
-    path: '/watchlist/:userId',
+    path: '/watchlist',
     responses: {
       200: z.object({
         message: z.string(),
       }),
-      400: z.object({ error: z.string() }),
+      401: z.object({ error: z.string() }),
       500: z.object({ error: z.string() }),
     },
   },

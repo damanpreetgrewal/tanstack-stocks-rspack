@@ -19,22 +19,10 @@ authRouter.all("*", async (req, res) => {
 
     const response = await auth.handler(webRequest);
     
-    // Copy all headers from the response (IMPORTANT: includes Set-Cookie for session)
-    const cookieHeaders: string[] = [];
+    // Copy all headers from the response
     response.headers.forEach((value, key) => {
-      if (key.toLowerCase() === 'set-cookie') {
-        // Collect Set-Cookie headers (can have multiple)
-        cookieHeaders.push(value);
-      } else if (key.toLowerCase() !== 'location') {
-        // Copy other headers except location (we handle that separately)
-        res.setHeader(key, value);
-      }
+      res.setHeader(key, value);
     });
-    
-    // Set all collected cookies
-    if (cookieHeaders.length > 0) {
-      res.setHeader('set-cookie', cookieHeaders);
-    }
     
     // Handle redirects - redirect to frontend after OAuth success
     if ((response.status === 302 || response.status === 301) && response.headers.get('location')) {

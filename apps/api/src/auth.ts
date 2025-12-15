@@ -30,6 +30,19 @@ export const auth = betterAuth({
     afterSignIn: `${process.env.WEB_URL || "http://localhost:4200"}/`,
     afterSignUp: `${process.env.WEB_URL || "http://localhost:4200"}/`,
   },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // 5 minutes
+    },
+  },
+  advanced: {},
+  cookieOptions: {
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+    path: "/",
+  },
 });
 
 export type Auth = typeof auth;

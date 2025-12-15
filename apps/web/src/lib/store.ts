@@ -15,29 +15,22 @@ export const watchlistStore = new Store<WatchlistState>({
   isInitialized: false,
 });
 
-// Get user ID (you can replace this with actual auth logic)
-const getUserId = (): string => {
-  if (typeof window === 'undefined') return '';
-  // Use a persistent user ID from localStorage or generate one
-  let userId = localStorage.getItem('userId');
-  if (!userId) {
-    userId = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    localStorage.setItem('userId', userId);
-  }
-  return userId;
-};
-
 // API client for watchlist
 const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
 
 export const watchlistAPI = {
   async fetchWatchlist(): Promise<string[]> {
-    const userId = getUserId();
-    if (!userId) throw new Error('No user ID available');
-
     try {
-      const response = await fetch(`${API_URL}/watchlist/${userId}`);
-      if (!response.ok) throw new Error('Failed to fetch watchlist');
+      const response = await fetch(`${API_URL}/watchlist`, {
+        credentials: 'include', // Pass cookies to backend
+      });
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.warn('Not authenticated, returning empty watchlist');
+          return [];
+        }
+        throw new Error('Failed to fetch watchlist');
+      }
       const data = await response.json();
       return data.watchlist.map((item: { ticker: string }) => item.ticker);
     } catch (error) {
@@ -49,14 +42,12 @@ export const watchlistAPI = {
   },
 
   async addTicker(ticker: string): Promise<void> {
-    const userId = getUserId();
-    if (!userId) throw new Error('No user ID available');
-
     try {
-      const response = await fetch(`${API_URL}/watchlist/${userId}`, {
+      const response = await fetch(`${API_URL}/watchlist`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ticker: ticker.toUpperCase() }),
+        credentials: 'include', // Pass cookies to backend
       });
 
       if (response.status === 409) {
@@ -64,7 +55,10 @@ export const watchlistAPI = {
         return;
       }
 
-      if (!response.ok) throw new Error('Failed to add ticker');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to add ticker');
+      }
     } catch (error) {
       console.error('Error adding ticker:', error);
       throw error;
@@ -72,15 +66,16 @@ export const watchlistAPI = {
   },
 
   async removeTicker(ticker: string): Promise<void> {
-    const userId = getUserId();
-    if (!userId) throw new Error('No user ID available');
-
     try {
-      const response = await fetch(`${API_URL}/watchlist/${userId}/${ticker.toUpperCase()}`, {
+      const response = await fetch(`${API_URL}/watchlist/${ticker.toUpperCase()}`, {
         method: 'DELETE',
+        credentials: 'include', // Pass cookies to backend
       });
 
-      if (!response.ok) throw new Error('Failed to remove ticker');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to remove ticker');
+      }
     } catch (error) {
       console.error('Error removing ticker:', error);
       throw error;
@@ -88,15 +83,16 @@ export const watchlistAPI = {
   },
 
   async clearWatchlist(): Promise<void> {
-    const userId = getUserId();
-    if (!userId) throw new Error('No user ID available');
-
     try {
-      const response = await fetch(`${API_URL}/watchlist/${userId}`, {
+      const response = await fetch(`${API_URL}/watchlist`, {
         method: 'DELETE',
+        credentials: 'include', // Pass cookies to backend
       });
 
-      if (!response.ok) throw new Error('Failed to clear watchlist');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to clear watchlist');
+      }
     } catch (error) {
       console.error('Error clearing watchlist:', error);
       throw error;
