@@ -1,5 +1,6 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useSession, signOut } from '../lib/auth-client';
+import { getInitials, getAvatarColor } from '../lib/avatar-utils';
 import { toast } from 'sonner';
 
 export function Navigation() {
@@ -45,12 +46,16 @@ export function Navigation() {
               
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
-                  {session.user.image && (
+                  {session.user.image ? (
                     <img 
                       src={session.user.image} 
                       alt={session.user.name || 'User'} 
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-full object-cover"
                     />
+                  ) : (
+                    <div className={`w-8 h-8 rounded-full ${getAvatarColor(session.user.name)} flex items-center justify-center text-white text-xs font-semibold`}>
+                      {getInitials(session.user.name)}
+                    </div>
                   )}
                   <span className="text-sm text-gray-700 dark:text-gray-300">
                     {session.user.name || session.user.email}
