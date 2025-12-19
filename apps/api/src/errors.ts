@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { logger } from './logger';
 
 export class AppError extends Error {
@@ -9,14 +9,6 @@ export class AppError extends Error {
     super(message);
   }
 }
-
-export const asyncHandler = (
-  fn: (req: Request, res: Response, next: NextFunction) => Promise<void>
-) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch(next);
-  };
-};
 
 export const errorHandler = (
   err: Error | AppError,
