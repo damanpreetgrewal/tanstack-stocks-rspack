@@ -11,7 +11,7 @@ type ApiRequest = {
   headers?: Record<string, string>;
 };
 
-const API_URL = import.meta.env.API_URL || 'http://localhost:3000/api';
+const API_URL = 'http://localhost:3000/api';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,

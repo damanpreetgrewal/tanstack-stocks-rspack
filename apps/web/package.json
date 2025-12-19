@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "rsbuild dev",
-    "build": "rsbuild build",
-    "preview": "rsbuild preview",
+    "dev": "rspack serve --config rspack.config.js",
+    "build": "rspack build --config rspack.config.js",
+    "preview": "rspack serve --config rspack.config.js --mode production",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx"
   },
@@ -27,8 +27,9 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@rsbuild/core": "^1.6.14",
-    "@rsbuild/plugin-react": "^1.4.2",
+    "@rspack/cli": "^1.1.7",
+    "@rspack/core": "^1.1.7",
+    "@module-federation/enhanced": "^0.8.4",
     "@tanstack/router-devtools": "^1.141.2",
     "@tanstack/router-plugin": "^1.141.2",
     "@types/node": "^20.10.0",
@@ -37,9 +38,14 @@
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
     "autoprefixer": "^10.4.16",
+    "css-loader": "^7.1.2",
     "eslint": "^8.54.0",
+    "html-webpack-plugin": "^5.6.3",
     "postcss": "^8.4.32",
+    "postcss-loader": "^8.1.1",
+    "style-loader": "^4.0.0",
     "tailwindcss": "^3.3.6",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "ts-loader": "^9.5.1"
   }
 }

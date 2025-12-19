@@ -16,7 +16,7 @@ export const watchlistStore = new Store<WatchlistState>({
 });
 
 // API client for watchlist
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_URL = 'http://localhost:3000/api';
 
 export const watchlistAPI = {
   async fetchWatchlist(): Promise<string[]> {
