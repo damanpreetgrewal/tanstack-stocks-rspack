@@ -14,7 +14,7 @@ export const watchlistContract = c.router({
   // Get user's watchlist
   getWatchlist: {
     method: 'GET',
-    path: '/watchlist/:userId',
+    path: '/watchlist',
     responses: {
       200: z.object({
         watchlist: WatchlistSchema,
@@ -27,7 +27,7 @@ export const watchlistContract = c.router({
   // Add ticker to watchlist
   addToWatchlist: {
     method: 'POST',
-    path: '/watchlist/:userId',
+    path: '/watchlist',
     body: z.object({
       ticker: z.string().min(1),
     }),
@@ -45,7 +45,7 @@ export const watchlistContract = c.router({
   // Remove ticker from watchlist
   removeFromWatchlist: {
     method: 'DELETE',
-    path: '/watchlist/:userId/:ticker',
+    path: '/watchlist/:ticker',
     responses: {
       200: z.object({
         message: z.string(),
@@ -59,7 +59,7 @@ export const watchlistContract = c.router({
   // Clear entire watchlist
   clearWatchlist: {
     method: 'DELETE',
-    path: '/watchlist/:userId',
+    path: '/watchlist',
     responses: {
       200: z.object({
         message: z.string(),

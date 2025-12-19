@@ -3,7 +3,6 @@ import { logger } from '../logger';
 import { AuthenticatedRequest } from '../middleware';
 
 interface WatchlistParams {
-  userId: string;
   ticker?: string;
 }
 
@@ -12,7 +11,7 @@ interface AddToWatchlistBody {
 }
 
 export const watchlistRouteHandlers = {
-  getWatchlist: async ({ req }: { params: WatchlistParams; req: AuthenticatedRequest }) => {
+  getWatchlist: async ({ req }: { req: AuthenticatedRequest }) => {
     const userId = req.user?.id;
 
     if (!userId) {
@@ -51,7 +50,6 @@ export const watchlistRouteHandlers = {
     req,
     body,
   }: {
-    params: WatchlistParams;
     body: AddToWatchlistBody;
     req: AuthenticatedRequest;
   }) => {
@@ -111,7 +109,7 @@ export const watchlistRouteHandlers = {
     }
   },
 
-  removeFromWatchlist: async ({ params, req }: { params: WatchlistParams & { ticker: string }; req: AuthenticatedRequest }) => {
+  removeFromWatchlist: async ({ params, req }: { params: WatchlistParams; req: AuthenticatedRequest }) => {
     const userId = req.user?.id;
     const { ticker } = params;
 
@@ -159,7 +157,7 @@ export const watchlistRouteHandlers = {
     }
   },
 
-  clearWatchlist: async ({ req }: { params: WatchlistParams; req: AuthenticatedRequest }) => {
+  clearWatchlist: async ({ req }: { req: AuthenticatedRequest }) => {
     const userId = req.user?.id;
 
     if (!userId) {

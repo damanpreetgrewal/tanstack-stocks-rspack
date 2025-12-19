@@ -16,7 +16,8 @@
     "test": "nx run-many --projects=api,web,contracts --targets=test",
     "type-check": "tsc --noEmit && nx run-many --projects=api,web,targets=type-check",
     "clean:install": "powershell -Command \"$ErrorActionPreference='SilentlyContinue'; Remove-Item -Path .\\node_modules, .\\apps\\*\\node_modules, .\\packages\\*\\node_modules, .\\package-lock.json -Recurse -Force; npm install\"",
-    "db:studio": "cd apps/api && prisma studio"
+    "db:studio": "cd apps/api && prisma studio",
+    "db:reset-data": "cd apps/api && tsx reset-data.ts"
   },
   "devDependencies": {
     "@nx/node": "^22.0.0",

@@ -134,10 +134,8 @@ npm run type-check
 npm run lint
 ```
 
-### Database Commands
-```bash
-# Create migration
-npm run prisma:migrate
+# DB Reset Command
+npm run db:reset-data
 
 # Generate client
 npm run prisma:generate
