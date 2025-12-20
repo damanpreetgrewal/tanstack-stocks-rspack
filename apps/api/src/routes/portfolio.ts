@@ -44,7 +44,7 @@ async function calculateHoldings(portfolioId: string) {
 
   // Filter out zero or negative positions
   const activeHoldings = Array.from(holdings.entries())
-    .filter(([_, holding]) => holding.quantity > 0)
+    .filter(([, holding]) => holding.quantity > 0)
     .map(([symbol, holding]) => ({
       symbol,
       quantity: holding.quantity,

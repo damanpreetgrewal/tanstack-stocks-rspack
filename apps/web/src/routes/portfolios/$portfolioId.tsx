@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import type { Holding, Transaction } from '@stocks/contracts';
+import { TransactionForm } from '../../components/TransactionForm';
 
 const searchSchema = z.object({
   tab: z.enum(['holdings', 'transactions', 'performance']).optional().default('holdings'),
@@ -200,7 +201,6 @@ function MetricCard({
 function HoldingsTab({
   holdings,
   isLoading,
-  portfolioId,
 }: {
   holdings: Holding[];
   isLoading: boolean;
@@ -233,7 +233,17 @@ function HoldingsTab({
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+    <div className="space-y-4">
+      <div className="flex justify-end">
+        <button
+          onClick={() => navigate({ search: (prev) => ({ ...prev, tab: 'transactions' }) })}
+          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          + Add Transaction
+        </button>
+      </div>
+      
+      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50 dark:bg-gray-800">
@@ -303,6 +313,7 @@ function HoldingsTab({
         </table>
       </div>
     </div>
+    </div>
   );
 }
 
@@ -344,11 +355,11 @@ function TransactionsTab({
       </div>
 
       {showForm && (
-        <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-800">
-          <p className="text-gray-600 dark:text-gray-400">
-            Transaction form component to be implemented
-          </p>
-        </div>
+        <TransactionForm
+          portfolioId={portfolioId}
+          onSuccess={() => setShowForm(false)}
+          onCancel={() => setShowForm(false)}
+        />
       )}
 
       {transactions.length === 0 ? (

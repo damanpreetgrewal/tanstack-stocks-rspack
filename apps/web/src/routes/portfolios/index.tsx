@@ -10,7 +10,6 @@ export const Route = createFileRoute('/portfolios/')({
 
 function PortfolioListPage() {
   const { data: session, isPending } = useSession();
-  const navigate = useNavigate();
   const { data, isLoading, error } = usePortfolios();
 
   // Redirect to auth if not logged in
