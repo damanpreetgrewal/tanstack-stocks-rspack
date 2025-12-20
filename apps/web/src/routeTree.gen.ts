@@ -14,7 +14,10 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WatchlistIndexRouteImport } from './routes/watchlist/index'
 import { Route as StocksIndexRouteImport } from './routes/stocks/index'
+import { Route as PortfoliosIndexRouteImport } from './routes/portfolios/index'
 import { Route as StocksSymbolRouteImport } from './routes/stocks/$symbol'
+import { Route as PortfoliosNewRouteImport } from './routes/portfolios/new'
+import { Route as PortfoliosPortfolioIdRouteImport } from './routes/portfolios/$portfolioId'
 
 const NotFoundRoute = NotFoundRouteImport.update({
   id: '/not-found',
@@ -41,9 +44,24 @@ const StocksIndexRoute = StocksIndexRouteImport.update({
   path: '/stocks/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortfoliosIndexRoute = PortfoliosIndexRouteImport.update({
+  id: '/portfolios/',
+  path: '/portfolios/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StocksSymbolRoute = StocksSymbolRouteImport.update({
   id: '/stocks/$symbol',
   path: '/stocks/$symbol',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfoliosNewRoute = PortfoliosNewRouteImport.update({
+  id: '/portfolios/new',
+  path: '/portfolios/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfoliosPortfolioIdRoute = PortfoliosPortfolioIdRouteImport.update({
+  id: '/portfolios/$portfolioId',
+  path: '/portfolios/$portfolioId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -51,7 +69,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/not-found': typeof NotFoundRoute
+  '/portfolios/$portfolioId': typeof PortfoliosPortfolioIdRoute
+  '/portfolios/new': typeof PortfoliosNewRoute
   '/stocks/$symbol': typeof StocksSymbolRoute
+  '/portfolios': typeof PortfoliosIndexRoute
   '/stocks': typeof StocksIndexRoute
   '/watchlist': typeof WatchlistIndexRoute
 }
@@ -59,7 +80,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/not-found': typeof NotFoundRoute
+  '/portfolios/$portfolioId': typeof PortfoliosPortfolioIdRoute
+  '/portfolios/new': typeof PortfoliosNewRoute
   '/stocks/$symbol': typeof StocksSymbolRoute
+  '/portfolios': typeof PortfoliosIndexRoute
   '/stocks': typeof StocksIndexRoute
   '/watchlist': typeof WatchlistIndexRoute
 }
@@ -68,7 +92,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/not-found': typeof NotFoundRoute
+  '/portfolios/$portfolioId': typeof PortfoliosPortfolioIdRoute
+  '/portfolios/new': typeof PortfoliosNewRoute
   '/stocks/$symbol': typeof StocksSymbolRoute
+  '/portfolios/': typeof PortfoliosIndexRoute
   '/stocks/': typeof StocksIndexRoute
   '/watchlist/': typeof WatchlistIndexRoute
 }
@@ -78,7 +105,10 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/not-found'
+    | '/portfolios/$portfolioId'
+    | '/portfolios/new'
     | '/stocks/$symbol'
+    | '/portfolios'
     | '/stocks'
     | '/watchlist'
   fileRoutesByTo: FileRoutesByTo
@@ -86,7 +116,10 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/not-found'
+    | '/portfolios/$portfolioId'
+    | '/portfolios/new'
     | '/stocks/$symbol'
+    | '/portfolios'
     | '/stocks'
     | '/watchlist'
   id:
@@ -94,7 +127,10 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/not-found'
+    | '/portfolios/$portfolioId'
+    | '/portfolios/new'
     | '/stocks/$symbol'
+    | '/portfolios/'
     | '/stocks/'
     | '/watchlist/'
   fileRoutesById: FileRoutesById
@@ -103,7 +139,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   NotFoundRoute: typeof NotFoundRoute
+  PortfoliosPortfolioIdRoute: typeof PortfoliosPortfolioIdRoute
+  PortfoliosNewRoute: typeof PortfoliosNewRoute
   StocksSymbolRoute: typeof StocksSymbolRoute
+  PortfoliosIndexRoute: typeof PortfoliosIndexRoute
   StocksIndexRoute: typeof StocksIndexRoute
   WatchlistIndexRoute: typeof WatchlistIndexRoute
 }
@@ -145,11 +184,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StocksIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portfolios/': {
+      id: '/portfolios/'
+      path: '/portfolios'
+      fullPath: '/portfolios'
+      preLoaderRoute: typeof PortfoliosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/stocks/$symbol': {
       id: '/stocks/$symbol'
       path: '/stocks/$symbol'
       fullPath: '/stocks/$symbol'
       preLoaderRoute: typeof StocksSymbolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolios/new': {
+      id: '/portfolios/new'
+      path: '/portfolios/new'
+      fullPath: '/portfolios/new'
+      preLoaderRoute: typeof PortfoliosNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolios/$portfolioId': {
+      id: '/portfolios/$portfolioId'
+      path: '/portfolios/$portfolioId'
+      fullPath: '/portfolios/$portfolioId'
+      preLoaderRoute: typeof PortfoliosPortfolioIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -159,7 +219,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   NotFoundRoute: NotFoundRoute,
+  PortfoliosPortfolioIdRoute: PortfoliosPortfolioIdRoute,
+  PortfoliosNewRoute: PortfoliosNewRoute,
   StocksSymbolRoute: StocksSymbolRoute,
+  PortfoliosIndexRoute: PortfoliosIndexRoute,
   StocksIndexRoute: StocksIndexRoute,
   WatchlistIndexRoute: WatchlistIndexRoute,
 }

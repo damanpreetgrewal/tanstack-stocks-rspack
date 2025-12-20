@@ -38,6 +38,12 @@ export function Navigation() {
           {session?.user ? (
             <>
               <Link
+                to="/portfolios"
+                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
+              >
+                Portfolios
+              </Link>
+              <Link
                 to="/watchlist"
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
               >
