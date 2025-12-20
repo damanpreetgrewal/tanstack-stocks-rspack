@@ -35,9 +35,11 @@ async function calculateHoldings(portfolioId: string) {
     } else if (tx.type === 'SELL') {
       // Reduce position
       const avgCost = existing.quantity > 0 ? existing.totalCost / existing.quantity : 0;
+      const newQuantity = existing.quantity - tx.quantity;
+      // When selling, reduce cost basis proportionally and subtract commission from remaining cost
       holdings.set(tx.symbol, {
-        quantity: existing.quantity - tx.quantity,
-        totalCost: existing.totalCost - tx.quantity * avgCost - tx.commission,
+        quantity: newQuantity,
+        totalCost: Math.max(0, avgCost * newQuantity - tx.commission),
       });
     }
   }
@@ -141,7 +143,8 @@ async function calculateMetrics(portfolioId: string) {
 
   const totalGainLoss = totalValue - totalCost;
   const totalGainLossPercent = totalCost > 0 ? (totalGainLoss / totalCost) * 100 : 0;
-  const dayChangePercent = totalValue > 0 ? (totalDayChange / (totalValue - totalDayChange)) * 100 : 0;
+  const previousTotalValue = totalValue - totalDayChange;
+  const dayChangePercent = previousTotalValue > 0 ? (totalDayChange / previousTotalValue) * 100 : 0;
 
   return {
     totalValue,
