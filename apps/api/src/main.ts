@@ -6,9 +6,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { createExpressEndpoints } from '@ts-rest/express';
-import { stocksContract, watchlistContract } from '@stocks/contracts';
+import { stocksContract, watchlistContract, portfolioContract } from '@stocks/contracts';
 import { stocksRouteHandlers } from './routes/stocks';
 import { watchlistRouteHandlers } from './routes/watchlist';
+import { portfolioRouteHandlers } from './routes/portfolio';
 import { authRouter } from './routes/auth';
 import { requireAuth } from './middleware';
 import { errorHandler } from './errors';
@@ -75,8 +76,30 @@ createExpressEndpoints(
   watchlistRouter
 );
 
+// Portfolio routes require authentication
+const portfolioRouter = express.Router();
+portfolioRouter.use(requireAuth);
+
+createExpressEndpoints(
+  portfolioContract,
+  {
+    getPortfolios: portfolioRouteHandlers.getPortfolios,
+    createPortfolio: portfolioRouteHandlers.createPortfolio,
+    getPortfolio: portfolioRouteHandlers.getPortfolio,
+    updatePortfolio: portfolioRouteHandlers.updatePortfolio,
+    deletePortfolio: portfolioRouteHandlers.deletePortfolio,
+    addTransaction: portfolioRouteHandlers.addTransaction,
+    getTransactions: portfolioRouteHandlers.getTransactions,
+    deleteTransaction: portfolioRouteHandlers.deleteTransaction,
+    getHoldings: portfolioRouteHandlers.getHoldings,
+    getMetrics: portfolioRouteHandlers.getMetrics,
+  },
+  portfolioRouter
+);
+
 app.use('/api', apiRouter);
 app.use('/api', watchlistRouter);
+app.use('/api', portfolioRouter);
 
 // 404 handler
 app.use((_, res) => {
