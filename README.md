@@ -1,440 +1,418 @@
-# 🚀 TanStack Stocks Dashboard - Advanced Full-Stack Demo
+# 🚀 TanStack Stocks Dashboard
 
-A **production-ready, fully-featured** stocks dashboard demonstrating **ALL modern TanStack patterns**:
+> **A production-grade monorepo showcasing the complete TanStack ecosystem** with real-time stock market data, authentication, and modern full-stack patterns.
 
-- ✅ **TanStack Router v1.x** - Route loaders, search params validation, error boundaries
-- ✅ **TanStack Query v5.x** - Real-time polling, caching, prefetching  
-- ✅ **TanStack Form** - Advanced form state with validation
-- ✅ **TanStack Virtual** - Virtualized lists (5000+ stocks smoothly)
-- ✅ **TanStack Store** - Watchlist reactive state with persistence
-- ✅ **Better-Auth** - Email/Password + Google/GitHub OAuth
-- ✅ **User-specific watchlists** - MongoDB with Prisma
-- ✅ **React 19** + **Rspack** (5x faster than Webpack!)
-- ✅ **Notifications** (Sonner)
-- ✅ **Express API** with **ts-rest** contracts + **Zod** validation
-- ✅ **MongoDB** + **Prisma** ORM
-- ✅ **TypeScript everywhere** - Zero `any` types
+<div align="center">
 
-**This is a learning project - every line demonstrates production patterns!**
+**React 19** • **TanStack Router** • **TanStack Query** • **TanStack Form** • **TanStack Virtual** • **TanStack Store**  
+**Rspack** • **Better Auth** • **TypeScript** • **Prisma** • **MongoDB** • **Nx Monorepo**
 
-## 🎯 What You'll Learn
+[Quick Start](#-quick-start) • [Features](#-features) • [Documentation](#-documentation) • [Architecture](#-architecture)
 
-This project is a **complete reference implementation** showing:
-
-### TanStack Router
-- [x] Route loaders (pre-fetch data before rendering)
-- [x] Zod search param validation
-- [x] Route param validation  
-- [x] Error boundaries
-- [x] Suspense boundaries
-- [x] Type-safe navigation with `getRouteApi()`
-- [x] Pending UI states
-
-### TanStack Query
-- [x] Query configuration (stale time, cache time)
-- [x] Real-time polling (10 seconds)
-- [x] Loader + Query combo (initial + live)
-- [x] Lazy loading on user interaction
-- [x] Prefetching
-
-### TanStack Form
-- [x] Form state management
-- [x] Field subscriptions
-- [x] Zod validation integration
-- [x] Form submission with URL sync
-
-### TanStack Virtual
-- [x] Virtualizing long lists (5000+ items)
-- [x] Scroll performance optimization
-- [x] Dynamic sizing
-
-### TanStack Store
-- [x] Lightweight reactive state
-- [x] localStorage persistence
-- [x] Store subscriptions
-
-### Advanced Patterns
-- [x] File-based routing
-- [x] Type-safe API contracts (ts-rest)
-- [x] Error handling & notifications
-- [x] Monorepo with Nx
+</div>
 
 ---
 
-## 📂 Project Structure
+## ✨ What Makes This Special
 
-**Architecture:** Single-page React application (port 4200) + Express API (port 3000)
+This isn't just another stock dashboard – it's a **comprehensive reference implementation** demonstrating:
 
+- 🎯 **Complete TanStack ecosystem integration** in a real-world application
+- 🏗️ **Nx monorepo architecture** with shared contracts and type safety
+- 🔐 **Full authentication system** with OAuth providers (Google, GitHub)
+- ⚡ **Rspack bundler** – 5x faster builds than Webpack
+- 📡 **Real-time data** with optimistic updates and intelligent caching
+- 🎨 **Modern UI/UX** with dark mode and responsive design
+- 📚 **Learning-focused** – every pattern is documented and explained
+
+---
+
+## 🎯 Features
+
+### Core Functionality
+- **📊 Real-Time Stock Data** – Live price updates every 10 seconds via polling
+- **🔍 Advanced Search** – Search 5000+ stocks with instant virtualized rendering
+- **⭐ Personal Watchlist** – Track favorite stocks with localStorage persistence
+- **📈 Stock Details** – Company profiles, historical charts, and market data
+- **🔐 Authentication** – Secure login with email/password or OAuth providers
+- **🌙 Dark Mode** – Fully responsive design with dark theme support
+
+### TanStack Integrations
+
+#### 🧭 TanStack Router
+```typescript
+// Route loaders pre-fetch data before rendering
+loader: async () => {
+  const response = await apiClient.getPopular({ query: { limit: '8' } });
+  return { popularStocks: response.body };
+}
+```
+- File-based routing with automatic code splitting
+- Type-safe navigation and search params
+- Route loaders eliminate waterfall loading
+- Error boundaries and suspense integration
+
+#### 🔄 TanStack Query
+```typescript
+// Seamless loader + query integration
+const { data } = useQuery({
+  queryKey: ['stock', symbol],
+  queryFn: () => fetchStock(symbol),
+  initialData: loaderData.stock,
+  refetchInterval: 10000, // Real-time updates
+});
+```
+- Intelligent caching and background refetching
+- Optimistic UI updates
+- Automatic request deduplication
+- React Suspense support
+
+#### 📝 TanStack Form
+- Advanced form validation with Zod schemas
+- Field-level subscriptions and updates
+- URL-synchronized search state
+- Type-safe form handling
+
+#### 🚀 TanStack Virtual
+- Smooth rendering of 5000+ stock items
+- Only renders visible items (20 DOM nodes for 5000 items)
+- 60fps scrolling performance
+- Dynamic height calculations
+
+#### 💾 TanStack Store
+- Lightweight reactive state management
+- localStorage persistence layer
+- Cross-tab synchronization
+- Zero boilerplate state updates
+
+---
+
+## 🏗️ Architecture
+
+### Monorepo Structure
 ```
 tanstack-stocks-rspack/
 ├── apps/
-│   ├── api/                          # Express + ts-rest backend (port 3000)
+│   ├── api/              # Express backend (port 3000)
 │   │   ├── src/
-│   │   │   ├── main.ts              # Express setup
-│   │   │   ├── auth.ts              # better-auth configuration
-│   │   │   ├── finnhub.ts           # Stock API client
-│   │   │   ├── routes/
-│   │   │   │   ├── stocks.ts        # Stock endpoints
-│   │   │   │   ├── watchlist.ts     # User watchlist endpoints
-│   │   │   │   └── auth.ts          # Auth endpoints
-│   │   │   ├── prisma.ts            # DB connection
-│   │   │   └── errors.ts            # Error handling
-│   │   ├── prisma/schema.prisma     # MongoDB schema
-│   │   └── package.json
+│   │   │   ├── routes/   # API endpoints
+│   │   │   ├── auth.ts   # Better-auth config
+│   │   │   └── main.ts   # Server entry
+│   │   └── prisma/       # Database schema
 │   │
-│   └── web/                          # React 19 + Rsbuild (port 4200)
+│   └── web/              # React frontend (port 4200)
 │       ├── src/
-│       │   ├── main.tsx             # React entry
-│       │   ├── App.tsx              # Root component
-│       │   ├── router.tsx           # Router configuration
-│       │   ├── routes/
-│       │   │   ├── __root.tsx       # Root layout
-│       │   │   ├── index.tsx        # Dashboard with loader
-│       │   │   ├── auth.tsx         # Login/Register page
-│       │   │   ├── stocks/
-│       │   │   │   ├── index.tsx    # Search with params validation
-│       │   │   │   └── $symbol.tsx  # Detail with loader + live updates
-│       │   │   └── watchlist/
-│       │   │       └── index.tsx    # User's watchlist
+│       │   ├── routes/   # File-based routing
 │       │   ├── components/
-│       │   │   ├── Navigation.tsx   # Nav with auth state
-│       │   │   └── StockCard.tsx
-│       │   ├── lib/
-│       │   │   ├── api-client.ts    # ts-rest client
-│       │   │   ├── auth-client.ts   # better-auth client
-│       │   │   ├── queries.ts       # Query hooks
-│       │   │   ├── store.ts         # TanStack Store
-│       │   │   └── notifications.ts # Sonner toast
-│       │   └── styles/index.css
-│       ├── rspack.config.ts         # Rspack bundler config
-│       ├── tailwind.config.js
-│       └── package.json
+│       │   └── lib/      # Shared utilities
+│       └── rsbuild.config.ts
 │
 └── packages/
-    └── contracts/                    # Shared ts-rest + Zod
-        ├── src/
-        │   ├── index.ts
-        │   ├── common.ts            # Shared schemas
-        │   └── stocks.contract.ts   # API contract
-        └── package.json
+    └── contracts/        # Shared TypeScript types
+        └── src/          # ts-rest API contracts
 ```
 
----
+### Tech Stack
 
-## 🎓 Learning Resources (In This Repo)
+**Frontend**
+- React 19 with concurrent features
+- TanStack Router for file-based routing
+- TanStack Query for server state
+- Rspack for lightning-fast builds
+- Tailwind CSS for styling
 
-| Document | What You'll Learn |
-|----------|------------------|
-| [SETUP.md](SETUP.md) | Installation & quickstart |
-| [AUTH_SETUP.md](AUTH_SETUP.md) | **Authentication setup** - Google/GitHub OAuth, email/password |
-| [TANSTACK_ROUTER_GUIDE.md](TANSTACK_ROUTER_GUIDE.md) | **Router deep dive** - loaders, params, search, getRouteApi() |
-| [TANSTACK_LIBRARIES.md](TANSTACK_LIBRARIES.md) | **All libraries** - complete patterns for each |
-| [PATTERNS_COOKBOOK.md](PATTERNS_COOKBOOK.md) | **Copy-paste ready** - solutions to common problems |
+**Backend**
+- Node.js + Express REST API
+- ts-rest for type-safe contracts
+- Zod for runtime validation
+- Prisma ORM with MongoDB
+- Better-auth for authentication
+
+**DevOps**
+- Nx for monorepo orchestration
+- TypeScript strict mode everywhere
+- ESLint + Prettier formatting
+- Hot module replacement (HMR)
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+
-- MongoDB Cloud (free) - [mongodb.com](https://cloud.mongodb.com)
-- Finnhub API key (free) - [finnhub.io](https://finnhub.io)
-
-### Setup (5 minutes)
 ```bash
-# 1. Clone and setup
-cd tanstack-stocks-rspack
-npm install
-
-# 2. Configure environment
-cp .env.example .env
-# Edit .env with MongoDB URL + Finnhub API key
-
-# 3. Generate Prisma client & sync database
-cd apps/api
-npx prisma generate
-npx prisma db push
-cd ../..
-
-# 4. Start development servers
-npm run dev
+Node.js 18+
+MongoDB Atlas (free tier)
+Finnhub API key (free at finnhub.io)
 ```
 
-**Access the app:**
-- **Web UI**: http://localhost:4200
-- **API**: http://localhost:3000
+### Installation
 
-See [SETUP.md](SETUP.md) for detailed instructions.
+1. **Clone and install dependencies**
+   ```bash
+   git clone <repository-url>
+   cd tanstack-stocks-rspack
+   npm install
+   ```
+
+2. **Configure environment variables**
+   ```bash
+   # Copy example environment file
+   cp .env.example .env
+   
+   # Edit .env with your credentials:
+   # - MONGODB_URL (MongoDB Atlas connection string)
+   # - FINNHUB_API_KEY (from finnhub.io)
+   # - BETTER_AUTH_SECRET (generate with: openssl rand -base64 32)
+   ```
+
+3. **Setup database**
+   ```bash
+   cd apps/api
+   npx prisma generate
+   npx prisma db push
+   cd ../..
+   ```
+
+4. **Start development servers**
+   ```bash
+   npm run dev
+   ```
+
+**Access the application:**
+- 🌐 Web UI: [http://localhost:4200](http://localhost:4200)
+- 🔌 API: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🎨 Pages & Features
+## 📚 Documentation
 
-### Dashboard (`/`)
-- Popular stocks grid
-- **Feature**: Route loader pre-fetches data before render
-- **Feature**: Real-time 10s polling
-
-### Search (`/stocks`)
-- Type to search any stock
-- Validated search params (URL-safe)
-- Virtual scroll (5000+ items)
-- Sort & filter options
-- **Feature**: TanStack Form for search
-- **Feature**: TanStack Virtual for performance
-
-### Stock Detail (`/stocks/:symbol`)
-- Real-time price updates
-- Company information
-- Tabs (Overview, Chart, News)
-- Add/remove from watchlist
-- **Feature**: Loader for initial data
-- **Feature**: Query for live updates (10s polling)
-- **Feature**: Lazy loading on tab switch
-
-### Watchlist (`/watchlist`)
-- All saved stocks with live prices
-- Add/remove buttons
-- TanStack Store for state
-- localStorage persistence
-- **Feature**: Real-time sync across tabs
-- **Feature**: Reactive Store updates
+| Guide | Description |
+|-------|-------------|
+| [**SETUP.md**](docs/SETUP.md) | Detailed installation and configuration |
+| [**AUTH_SETUP.md**](docs/AUTH_SETUP.md) | Configure OAuth providers (Google, GitHub) |
+| [**TANSTACK_ROUTER_GUIDE.md**](docs/TANSTACK_ROUTER_GUIDE.md) | Deep dive into routing patterns |
+| [**TANSTACK_LIBRARIES.md**](docs/TANSTACK_LIBRARIES.md) | Complete guide to all TanStack libraries |
+| [**PATTERNS_COOKBOOK.md**](docs/PATTERNS_COOKBOOK.md) | Copy-paste ready code patterns |
+| [**QUICK_REFERENCE.md**](docs/QUICK_REFERENCE.md) | Quick command and API reference |
 
 ---
 
-## 🔧 Tech Stack
+## 💡 Key Patterns
 
-### Frontend
-- React 19 - UI
-- **TanStack Router v1.x** - Routing with loaders
-- **TanStack Query v5.x** - Server state
-- **TanStack Form** - Form state
-- **TanStack Virtual** - List virtualization
-- **TanStack Store** - Client state
-- Rspack - Bundler (5x faster!)
-- TypeScript - Type safety
-- Tailwind CSS - Styling
-- Sonner - Toast notifications
+### Pattern 1: Loader + Query Fusion
+Combine route loaders for initial data with queries for real-time updates:
 
-### Backend
-- Node.js + Express - Web server
-- **ts-rest** - Type-safe API contracts
-- **Zod** - Validation
-- **Prisma** - ORM
-- MongoDB - Database
-- Finnhub API - Stock data
-
-### DevTools
-- Nx - Monorepo
-- ESLint - Linting
-- Prettier - Formatting
-- Winston - Logging
-
----
-
-## 🎯 Advanced Patterns Used
-
-### Pattern 1: Loader + Query (Best of Both Worlds)
 ```typescript
-// Loader provides initial data
-loader: async () => ({ quote: await getQuote() })
+// Pre-fetch on route load
+export const Route = createFileRoute('/stocks/$symbol')({
+  loader: async ({ params }) => {
+    const response = await apiClient.getQuote({ params });
+    return { quote: response.body };
+  },
+});
 
-// Query provides real-time updates
-const { data: quote } = useQuery({
-  initialData: loaderData.quote,
-  refetchInterval: 10000,
-})
-```
-✅ No waterfall loading ✅ Real-time updates ✅ Type-safe
-
-### Pattern 2: Type-Safe Search Params
-```typescript
-validateSearch: z.object({
-  q: z.string(),
-  sortBy: z.enum(['symbol', 'name']),
-})
-
-// Full type checking in component
-const { q, sortBy } = routeApi.useSearch();
-```
-✅ URL-safe ✅ Type-checked ✅ Validated
-
-### Pattern 3: Route Loaders for Data
-```typescript
-// Pre-fetch before rendering
-loader: async ({ deps }) => {
-  const response = await apiClient.getQuote({ params: { symbol } });
-  return { quote: response.body };
+// Component uses loader data + live updates
+function StockDetail() {
+  const { quote: initialQuote } = Route.useLoaderData();
+  
+  const { data: quote } = useQuery({
+    queryKey: ['quote', symbol],
+    initialData: initialQuote,
+    refetchInterval: 10000, // Real-time sync
+  });
 }
-
-// Component renders with data
-const { quote } = routeApi.useLoaderData();
 ```
-✅ No loading state ✅ Pre-fetched ✅ Parallel requests
 
-### Pattern 4: Virtual Scrolling
+### Pattern 2: Type-Safe API Contracts
+End-to-end type safety from frontend to backend:
+
+```typescript
+// Shared contract (packages/contracts)
+export const stocksContract = initContract().router({
+  getQuote: {
+    method: 'GET',
+    path: '/stocks/:symbol/quote',
+    responses: { 200: StockQuoteSchema },
+  },
+});
+
+// Backend implements contract
+const router = tsr.router(stocksContract, { 
+  getQuote: async ({ params }) => {...} 
+});
+
+// Frontend gets full type safety
+const response = await apiClient.getQuote({ params: { symbol: 'AAPL' } });
+// response.body is fully typed!
+```
+
+### Pattern 3: Virtual Scrolling for Performance
 ```typescript
 const virtualizer = useVirtualizer({
-  count: 5000,
+  count: stocks.length, // 5000+ items
   getScrollElement: () => parentRef.current,
   estimateSize: () => 80,
 });
-```
-✅ 5000 items, only 20 DOM nodes ✅ 60fps smooth scrolling
 
-### Pattern 5: Reactive Store with Persistence
-```typescript
-watchlistStore.subscribe(
-  (state) => state.items,
-  (items) => localStorage.setItem('watchlist', JSON.stringify(items))
-)
-
-watchlistHelpers.add('AAPL');
+// Only renders visible items
+{virtualizer.getVirtualItems().map((virtualRow) => (
+  <div key={virtualRow.index}>
+    {stocks[virtualRow.index]}
+  </div>
+))}
 ```
-✅ Lightweight ✅ Auto-persisted ✅ Reactive
 
 ---
 
-## 📊 Data Flow
+## 🎨 Application Features
+
+### 📊 Dashboard
+Real-time overview of popular stocks with instant price updates.
+- Pre-fetched data via route loaders
+- Live polling every 10 seconds
+- Responsive grid layout
+
+### 🔍 Stock Search
+Powerful search across 5000+ stocks with virtualized rendering.
+- TanStack Form for search state
+- TanStack Virtual for smooth scrolling
+- URL-synchronized filters
+- Zod-validated search params
+
+### 📈 Stock Details
+Comprehensive stock information with real-time data.
+- Company profiles and financial data
+- Historical price charts
+- Add to personal watchlist
+- Optimistic UI updates
+
+### ⭐ Watchlist
+Personal stock tracking with cross-tab synchronization.
+- TanStack Store for reactive state
+- localStorage persistence
+- Real-time price updates
+- User-specific lists with MongoDB
+
+---
+
+## 🛠️ Available Commands
+
+```bash
+# Development
+npm run dev          # Start both API and web servers
+npm run api          # Start API server only
+npm run web          # Start web server only
+
+# Build
+npm run build        # Build all projects for production
+
+# Database
+npm run db:studio    # Open Prisma Studio (database GUI)
+npm run db:reset-data # Reset database with sample data
+
+# Code Quality
+npm run lint         # Run ESLint on all projects
+npm run type-check   # TypeScript type checking
+```
+
+---
+
+## 📊 Data Flow Example
 
 ```
-User loads /stocks/AAPL
+User navigates to /stocks/AAPL
     ↓
 Router validates param: symbol = 'AAPL'
     ↓
-Loader runs in parallel:
+Loader pre-fetches data in parallel:
     ├─ getQuote('AAPL')
     └─ getProfile('AAPL')
     ↓
-Component renders with loader data (no loading state!)
+Component renders immediately (no loading state!)
     ↓
 Query starts polling every 10s
     ├─ Real-time price updates
-    └─ Notifies on changes
+    └─ Toast notifications on changes
     ↓
 User clicks "Add to Watchlist"
-    ├─ Store updated
+    ├─ Store updated reactively
     ├─ localStorage synced
-    └─ Toast notification
-    ↓
-User clicks "Chart" tab
-    ├─ Search params update
-    └─ Lazy Query loads historical data
+    ├─ API call sent
+    └─ Toast confirmation
 ```
 
 ---
 
-## 🚦 API Routes
+## 🚦 API Endpoints
 
-### Stocks Endpoints
-| Method | Path | Returns |
-|--------|------|---------|
-| GET | `/api/stocks/:symbol/quote` | `{ c, h, l, o, pc, t }` |
-| GET | `/api/stocks/search?q=...` | `{ results, total }` |
-| GET | `/api/stocks/popular?limit=8` | `{ stocks: [...] }` |
-| GET | `/api/stocks/:symbol/profile` | Company info |
-| GET | `/api/stocks/:symbol/historical?resolution=D&count=30` | OHLC candles |
-
-See [src/router.tsx](apps/web/src/router.tsx) for contract definitions.
-
----
-
-## 🎓 Step-by-Step Learning
-
-### Week 1: Foundations
-- [ ] Day 1: Understand file-based routing
-- [ ] Day 2: Create simple routes
-- [ ] Day 3: Add error boundaries
-
-### Week 2: Data Loading
-- [ ] Day 4: Implement route loaders
-- [ ] Day 5: Add search params validation
-- [ ] Day 6: Setup TanStack Query
-
-### Week 3: Advanced
-- [ ] Day 7: Virtual scrolling
-- [ ] Day 8: Store for client state
-- [ ] Day 9: Forms with TanStack Form
-- [ ] Day 10: Error handling & notifications
-
-### Week 4: Production
-- [ ] Optimize bundle size
-- [ ] Add tests
-- [ ] Deploy to production
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/stocks/:symbol/quote` | Current stock price |
+| GET | `/api/stocks/search?q=...` | Search stocks by symbol/name |
+| GET | `/api/stocks/popular?limit=8` | Popular stocks list |
+| GET | `/api/stocks/:symbol/profile` | Company information |
+| GET | `/api/stocks/:symbol/historical` | Historical price data |
+| GET | `/api/watchlist` | User's watchlist |
+| POST | `/api/watchlist` | Add stock to watchlist |
+| DELETE | `/api/watchlist/:symbol` | Remove from watchlist |
 
 ---
 
-## 🐛 Debugging Tips
+## 📈 Performance
 
-### See loader data
-```typescript
-const loaderData = routeApi.useLoaderData();
-console.log('Loader data:', loaderData);
-```
-
-### Check search params
-```typescript
-const search = routeApi.useSearch();
-console.log('Search params:', search);
-```
-
-### Monitor queries
-```typescript
-import { useIsFetching } from '@tanstack/react-query';
-const isFetching = useIsFetching();
-console.log('Fetching queries:', isFetching);
-```
-
-### View store state
-```typescript
-console.log('Store:', watchlistStore.getState());
-```
+This project delivers exceptional performance:
+- ⚡ **5x faster builds** with Rspack vs Webpack
+- 🚀 **Zero waterfall loading** with route loaders
+- 💾 **5000 items @ 60fps** with virtual scrolling
+- 🎯 **100% TypeScript coverage** for type safety
+- 📦 **Code splitting** per route for optimal bundles
 
 ---
 
-## 📈 Performance Features
+## 🔗 Resources
 
-This project achieves:
-- ⚡ **Rspack build** - 5x faster than Webpack
-- 🚀 **Route loaders** - Zero waterfall loading
-- 💾 **Virtual scrolling** - 5000 items @ 60fps
-- 🎯 **Type safety** - 100% TypeScript coverage
-- 📦 **Bundle size** - Code splitting per route
-
----
-
-## 🔗 Official Documentation
-
+**TanStack Ecosystem**
 - [TanStack Router](https://tanstack.com/router/latest)
 - [TanStack Query](https://tanstack.com/query/latest)
 - [TanStack Form](https://tanstack.com/form/latest)
 - [TanStack Virtual](https://tanstack.com/virtual/latest)
 - [TanStack Store](https://tanstack.com/store/latest)
+
+**Build Tools**
 - [Rspack](https://rspack.dev)
 - [ts-rest](https://ts-rest.com)
+- [Nx](https://nx.dev)
 
 ---
 
 ## 🤝 Contributing
 
-This is a reference implementation. Feel free to:
-- Study the patterns
-- Adapt to your projects
-- File issues or PRs
+This is a learning and reference implementation. Feel free to:
+- 🎓 Study the patterns and implementations
+- 🔧 Adapt code for your own projects
+- 🐛 Report issues or suggest improvements
+- 💡 Share your own patterns and ideas
 
 ---
 
 ## 📄 License
 
-MIT - Use freely for learning and projects
+MIT License - Use freely for learning and commercial projects
 
 ---
 
 ## 🎉 Next Steps
 
-1. ✅ [Setup the project](SETUP.md)
-2. 📖 [Read Router guide](TANSTACK_ROUTER_GUIDE.md)
-3. 🧑‍🍳 [Copy patterns](PATTERNS_COOKBOOK.md)
+1. ✅ [Setup the project](docs/SETUP.md)
+2. 📖 [Learn TanStack Router](docs/TANSTACK_ROUTER_GUIDE.md)
+3. 🧑‍🍳 [Copy useful patterns](docs/PATTERNS_COOKBOOK.md)
 4. 🚀 Build something amazing!
 
 **Happy coding!** 🚀
+
+---
+
+<div align="center">
+Made using the TanStack ecosystem
+</div>
+
