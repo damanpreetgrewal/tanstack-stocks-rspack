@@ -16,6 +16,9 @@ const axiosInstance = axios.create({
   baseURL: config.apiUrl,
   timeout: 10000,
   withCredentials: true, // Include cookies for auth
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // Add request interceptor for logging
@@ -63,6 +66,10 @@ export const portfolioApiClient = initClient(portfolioContract, {
       url: args.path,
       data: args.body,
       params: args.query ?? args.params,
+      headers: {
+        ...args.headers,
+        'Content-Type': 'application/json',
+      },
     });
     return { 
       status: response.status, 

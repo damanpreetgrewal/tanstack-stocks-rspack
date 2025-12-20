@@ -57,7 +57,7 @@ export const PortfolioMetricsSchema = z.object({
 const CreatePortfolioSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
-  isDefault: z.boolean().default(false),
+  isDefault: z.boolean().optional().default(false),
 });
 
 const UpdatePortfolioSchema = z.object({

@@ -1,6 +1,4 @@
-import './env';
 import { prisma } from './prisma';
-
 import express, { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';

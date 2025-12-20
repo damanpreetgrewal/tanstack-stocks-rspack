@@ -29,11 +29,17 @@ function NewPortfolioPage() {
     },
     onSubmit: async ({ value }) => {
       try {
-        const portfolio = await createPortfolio.mutateAsync({
+        const payload: { name: string; description?: string; isDefault: boolean } = {
           name: value.name,
-          description: value.description || undefined,
           isDefault: value.isDefault,
-        });
+        };
+        
+        // Only include description if it has a value
+        if (value.description.trim()) {
+          payload.description = value.description.trim();
+        }
+        
+        const portfolio = await createPortfolio.mutateAsync(payload);
 
         // Set as active portfolio
         portfolioHelpers.setActivePortfolio(portfolio.id);
