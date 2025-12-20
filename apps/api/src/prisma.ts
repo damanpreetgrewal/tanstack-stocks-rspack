@@ -3,16 +3,18 @@ import { logger } from './logger';
 
 let prisma: PrismaClient;
 
+const logQueries = process.env.PRISMA_LOG_QUERIES === 'true';
+
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient({
-    log: ['error', 'warn'],
+    log: logQueries ? ['error', 'warn', 'query'] : ['error', 'warn'],
   });
 } else {
   // Reuse the Prisma Client in development
   const globalWithPrisma = global as unknown as { prisma: PrismaClient };
   if (!globalWithPrisma.prisma) {
     globalWithPrisma.prisma = new PrismaClient({
-      log: ['info', 'error', 'warn', 'query'],
+      log: logQueries ? ['info', 'error', 'warn', 'query'] : ['info', 'error', 'warn'],
     });
   }
   prisma = globalWithPrisma.prisma;
