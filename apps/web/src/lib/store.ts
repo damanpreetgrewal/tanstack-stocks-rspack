@@ -1,4 +1,5 @@
 import { Store } from '@tanstack/store';
+import { config } from './config';
 
 interface WatchlistState {
   items: Set<string>;
@@ -15,14 +16,11 @@ export const watchlistStore = new Store<WatchlistState>({
   isInitialized: false,
 });
 
-// API client for watchlist
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000/api';
-
 export const watchlistAPI = {
   async fetchWatchlist(): Promise<string[]> {
     try {
-      const response = await fetch(`${API_URL}/watchlist`, {
-        credentials: 'include', // Send cookies for authentication
+      const response = await fetch(`${config.apiUrl}/watchlist`, {
+        credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to fetch watchlist');
       const data = await response.json();
@@ -35,15 +33,14 @@ export const watchlistAPI = {
 
   async addTicker(ticker: string): Promise<void> {
     try {
-      const response = await fetch(`${API_URL}/watchlist`, {
+      const response = await fetch(`${config.apiUrl}/watchlist`, {
         method: 'POST',
-        credentials: 'include', // Send cookies for authentication
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ticker: ticker.toUpperCase() }),
       });
 
       if (response.status === 409) {
-        // Already in watchlist, silently handle
         return;
       }
 
@@ -56,9 +53,9 @@ export const watchlistAPI = {
 
   async removeTicker(ticker: string): Promise<void> {
     try {
-      const response = await fetch(`${API_URL}/watchlist/${ticker.toUpperCase()}`, {
+      const response = await fetch(`${config.apiUrl}/watchlist/${ticker.toUpperCase()}`, {
         method: 'DELETE',
-        credentials: 'include', // Send cookies for authentication
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Failed to remove ticker');
@@ -70,9 +67,9 @@ export const watchlistAPI = {
 
   async clearWatchlist(): Promise<void> {
     try {
-      const response = await fetch(`${API_URL}/watchlist`, {
+      const response = await fetch(`${config.apiUrl}/watchlist`, {
         method: 'DELETE',
-        credentials: 'include', // Send cookies for authentication
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Failed to clear watchlist');
@@ -85,6 +82,11 @@ export const watchlistAPI = {
 
 // Initialize watchlist from database
 export const initializeWatchlist = async (): Promise<void> => {
+  // Guard: Don't initialize if already initialized or loading
+  if (watchlistStore.state.isInitialized || watchlistStore.state.isLoading) {
+    return;
+  }
+
   watchlistStore.setState((prev) => ({
     ...prev,
     isLoading: true,
@@ -98,27 +100,13 @@ export const initializeWatchlist = async (): Promise<void> => {
       isLoading: false,
       isInitialized: true,
     }));
-    // Save as backup
-    localStorage.setItem('watchlist_backup', JSON.stringify(tickers));
   } catch (error) {
     console.error('Failed to initialize watchlist:', error);
-    // Try to restore from backup
-    const backup = localStorage.getItem('watchlist_backup');
-    if (backup) {
-      const tickers = JSON.parse(backup);
-      watchlistStore.setState((prev) => ({
-        ...prev,
-        items: new Set(tickers),
-        isLoading: false,
-        isInitialized: true,
-      }));
-    } else {
-      watchlistStore.setState((prev) => ({
-        ...prev,
-        isLoading: false,
-        isInitialized: true,
-      }));
-    }
+    watchlistStore.setState((prev) => ({
+      ...prev,
+      isLoading: false,
+      isInitialized: true,
+    }));
   }
 };
 
@@ -126,7 +114,6 @@ export const initializeWatchlist = async (): Promise<void> => {
 export const watchlistHelpers = {
   add: async (symbol: string) => {
     const uppercased = symbol.toUpperCase();
-    // Optimistic update
     watchlistStore.setState((prev) => ({
       ...prev,
       items: new Set([...prev.items, uppercased]),
@@ -135,7 +122,6 @@ export const watchlistHelpers = {
     try {
       await watchlistAPI.addTicker(uppercased);
     } catch (error) {
-      // Rollback on error
       watchlistStore.setState((prev) => {
         const next = new Set(prev.items);
         next.delete(uppercased);
@@ -147,7 +133,6 @@ export const watchlistHelpers = {
 
   remove: async (symbol: string) => {
     const uppercased = symbol.toUpperCase();
-    // Optimistic update
     watchlistStore.setState((prev) => {
       const next = new Set(prev.items);
       next.delete(uppercased);
@@ -157,7 +142,6 @@ export const watchlistHelpers = {
     try {
       await watchlistAPI.removeTicker(uppercased);
     } catch (error) {
-      // Rollback on error
       watchlistStore.setState((prev) => ({
         ...prev,
         items: new Set([...prev.items, uppercased]),
@@ -177,7 +161,6 @@ export const watchlistHelpers = {
 
   clear: async () => {
     const backup = Array.from(watchlistStore.state.items);
-    // Optimistic update
     watchlistStore.setState((prev) => ({
       ...prev,
       items: new Set(),
@@ -186,7 +169,6 @@ export const watchlistHelpers = {
     try {
       await watchlistAPI.clearWatchlist();
     } catch (error) {
-      // Rollback on error
       watchlistStore.setState((prev) => ({
         ...prev,
         items: new Set(backup),

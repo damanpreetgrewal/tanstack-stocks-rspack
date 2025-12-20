@@ -1,6 +1,7 @@
 import { initClient } from '@ts-rest/core';
 import { stocksContract } from '@stocks/contracts';
 import axios from 'axios';
+import { config } from './config';
 
 type ApiRequest = {
   method: string;
@@ -11,10 +12,8 @@ type ApiRequest = {
   headers?: Record<string, string>;
 };
 
-const API_URL = import.meta.env.API_URL || 'http://localhost:3000/api';
-
 const axiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: config.apiUrl,
   timeout: 10000,
   withCredentials: true, // Include cookies for auth
 });
@@ -35,7 +34,7 @@ axiosInstance.interceptors.response.use(
 );
 
 export const apiClient = initClient(stocksContract, {
-  baseUrl: API_URL,
+  baseUrl: config.apiUrl,
   api: async (args: ApiRequest) => {
     const response = await axiosInstance({
       method: args.method,

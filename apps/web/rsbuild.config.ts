@@ -7,6 +7,10 @@ export default defineConfig({
     entry: {
       index: './src/main.tsx',
     },
+    define: {
+      API_URL: JSON.stringify(process.env.API_URL || 'http://localhost:3000/api'),
+      BASE_URL: JSON.stringify(process.env.BASE_URL || 'http://localhost:3000'),
+    },
   },
   plugins: [pluginReact()],
   server: {
