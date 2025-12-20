@@ -1,5 +1,5 @@
 import { initClient } from '@ts-rest/core';
-import { stocksContract } from '@stocks/contracts';
+import { stocksContract, portfolioContract } from '@stocks/contracts';
 import axios from 'axios';
 import { config } from './config';
 
@@ -41,6 +41,27 @@ export const apiClient = initClient(stocksContract, {
       url: args.path,
       data: args.body,
       // Use query for search params; params is for path params in ts-rest args
+      params: args.query ?? args.params,
+    });
+    return { 
+      status: response.status, 
+      body: response.data,
+      headers: new Headers(
+        Object.entries(response.headers || {}).map(
+          ([k, v]) => [k, String(v)] as [string, string],
+        ),
+      ),
+    };
+  },
+});
+
+export const portfolioApiClient = initClient(portfolioContract, {
+  baseUrl: config.apiUrl,
+  api: async (args: ApiRequest) => {
+    const response = await axiosInstance({
+      method: args.method,
+      url: args.path,
+      data: args.body,
       params: args.query ?? args.params,
     });
     return { 
