@@ -19,7 +19,7 @@
     "db:studio": "cd apps/api && prisma studio",
     "db:reset-data": "cd apps/api && tsx reset-data.ts"
   },
-  "devDependencies": {
+  "devDependencies": { 
     "@nx/node": "^22.0.0",
     "@nx/react": "^22.0.0",
     "@nx/web": "^22.0.0",

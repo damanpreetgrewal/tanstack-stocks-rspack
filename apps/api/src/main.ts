@@ -99,6 +99,11 @@ app.use('/api', apiRouter);
 app.use('/api', watchlistRouter);
 app.use('/api', portfolioRouter);
 
+// Health check endpoint for Render.com
+app.get('/health', (_, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // 404 handler
 app.use((_, res) => {
   res.status(404).json({

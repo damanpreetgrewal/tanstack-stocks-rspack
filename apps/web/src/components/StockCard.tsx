@@ -34,8 +34,7 @@ export function StockCard({ symbol, quote, onViewDetails }: StockCardProps) {
   };
 
   return (
-    // @ts-ignore - Dynamic route path
-    <Link to={`/stocks/${symbol}`} onClick={(e) => {
+    <Link to="/stocks/$symbol" params={{ symbol }} onClick={(e) => {
       if (onViewDetails) {
         e.preventDefault();
         onViewDetails();

@@ -55,7 +55,7 @@ export function Navigation() {
                   {session.user.image ? (
                     <img 
                       src={session.user.image} 
-                      alt={session.user.name || 'User'} 
+                      referrerPolicy="no-referrer"
                       className="w-8 h-8 rounded-full object-cover"
                     />
                   ) : (
